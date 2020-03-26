@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 public class DoubleDeathRattle : Effect
 {
+    int times;
+    public DoubleDeathRattle(int times)
+    {
+        this.times = times;
+    }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Killed card: " + ((CardKilledAction)cause).killedCard().getReadableName());
-        ((CardKilledAction)cause).killedCard().performedAction(new DeadAction(), board);
+        board.printDebugMessage("Double deathrattle on: " + ((CardKilledAction)cause).killedCard().getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
+        for (int i = 0; i < times; i++)
+            ((CardKilledAction)cause).killedCard().performedAction(new DeadAction(), board);
 
     }
     public override bool triggerFromAction(Action a)
@@ -23,5 +29,10 @@ public class DoubleDeathRattle : Effect
     public override bool Compare(Effect other)
     {
         return other is DoubleDeathRattle;
+    }
+
+    public override Effect makeGolden()
+    {
+        return new DoubleDeathRattle(times * 2);
     }
 }

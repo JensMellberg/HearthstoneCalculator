@@ -17,7 +17,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: buff spawned minion: " + user);
+        board.printDebugMessage("Performing action: buff spawned minion: " + user);
         ((CardSpawnedAction)cause).spawnedCard().addAttack(dmg);
         ((CardSpawnedAction)cause).spawnedCard().addHp(hp);
     }
@@ -28,6 +28,10 @@ using System.Threading.Tasks;
         return false;
     }
 
+    public override Effect makeGolden()
+    {
+        return new SpawnBuffEffect(type, dmg*2,hp*2);
+    }
 
     public override bool Compare(Effect other)
     {

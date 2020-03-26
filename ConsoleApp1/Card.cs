@@ -15,6 +15,9 @@ public class Card
     public CardCreatorFactory.Cards cardID;
     public int attackPriority;
     public const int MAX_PRIORITY = 1000;
+    public int tavernTier;
+    bool poisonous;
+    public bool golden = false;
     public enum Type
     {
         All,
@@ -26,7 +29,7 @@ public class Card
         None
     };
 
-    public Card(int ID, string name, int attack, int hp, List<Effect> effects, bool divineShield, bool taunt, Type type, CardCreatorFactory.Cards cardID)
+    public Card(int ID, string name, int attack, int hp, List<Effect> effects, bool poisonous, bool divineShield, bool taunt, Type type,int tier, CardCreatorFactory.Cards cardID)
 	{
         this.ID = ID == 0 ? ID = HearthstoneBoard.getRandomNumber(1, 9999) : ID;
         this.cardID = cardID;
@@ -39,13 +42,20 @@ public class Card
         this.divineShield = divineShield;
         this.taunt = taunt;
         this.type = type;
+        this.poisonous = poisonous;
+        this.tavernTier = tier;
 	}
 
     public bool typeMatches(Type t)
     {
-        if (type == Type.All)
+        return typesMatches(t, type);
+    }
+
+    public static bool typesMatches(Type t, Type t2)
+    {
+        if (t == t2)
             return true;
-        if (t == type)
+        if (t == Type.All || t2 == Type.All)
             return true;
         return false;
     }
@@ -60,7 +70,7 @@ public class Card
             c.performAdjacantEffects(this, board);
         performedAction(new GetDamageAction(), board);
         int result = attack + tempAttackBonus;
-        Console.WriteLine("damagebonus: " + tempAttackBonus+ "on "+getReadableName());
+        board.printDebugMessage("damagebonus: " + tempAttackBonus+ "on "+getReadableName(), HearthstoneBoard.OutputPriority.COMMUNICATION);
         tempAttackBonus = 0;
 
         return result;
@@ -69,7 +79,7 @@ public class Card
 
     public void performedAction(Action a, HearthstoneBoard hearthstoneBoard)
     {
-        Console.WriteLine("Received action " + a.getName() + " on "+this.getReadableName());
+        hearthstoneBoard.printDebugMessage("Received action " + a.getName() + " on "+this.getReadableName(), HearthstoneBoard.OutputPriority.COMMUNICATION);
         foreach (Effect e in effects)
         {
             e.performedAction(a,this,  hearthstoneBoard, null);
@@ -100,15 +110,25 @@ public class Card
         }
     }
 
+    public void causeDamageToTarget(Card target, HearthstoneBoard board, int damage)
+    {
+        if (poisonous)
+            damage = 999999;
+        if (target.dealDamage(damage, board))
+            performedAction(new OverKillAction(), board);
+    }
+
     public void performAttack(Card target, HearthstoneBoard board)
     {
-        Console.WriteLine("attacker: " + this.name + " defender: " + target.name);
-        int returnAttack = target.getAttack(board);
-        target.dealDamage(getAttack(board), board);
+        board.printDebugMessage("attacker: " + this.name + " defender: " + target.name, HearthstoneBoard.OutputPriority.ATTACKERS);
+        int returnAttack = target.poisonous ? 9999999 : target.getAttack(board);
+        //target.dealDamage(getAttack(board), board);
+        causeDamageToTarget(target, board, getAttack(board));
         this.dealDamage(returnAttack, board);
 
         attackPriority = Card.MAX_PRIORITY;
-        Console.WriteLine("attack perform finished from " + this.getReadableName() + " to " + target.getReadableName());
+        board.printDebugMessage("attack perform finished from " + this.getReadableName() + " to " + target.getReadableName(), HearthstoneBoard.OutputPriority.ATTACKERS);
+        if (board.printPriority >= HearthstoneBoard.OutputPriority.ATTACKERS)
         board.printState();
     }
     public void addStats(int attack, int hp)
@@ -154,6 +174,12 @@ public class Card
         return this;
     }
 
+    public Card setPoisonous(bool b)
+    {
+        this.poisonous = b;
+        return this;
+    }
+
     public Card setTaunt(bool b)
     {
         this.taunt = b;
@@ -167,21 +193,33 @@ public class Card
         return this;
     }
 
+    public Card makeGolden()
+    {
+        golden = true;
+        hp *= 2;
+        attack *= 2;
+        for (int i = 0; i < effects.Count; i++)
+            effects[i] = effects[i].makeGolden();
+        return this;
 
-    public void dealDamage(int damage, HearthstoneBoard board)
+    }
+
+
+    public bool dealDamage(int damage, HearthstoneBoard board)
     {
         if (divineShield)
         {
             divineShield = false;
-            return;
+            return false;
         }
         hp = hp - damage;
         if (hp <= 0)
         {
             this.performedAction(new DeadAction(), board);
             board.killOf(this);
-
+            return true;
         }
+        return false;
     }
 
     public void printState()
@@ -197,7 +235,9 @@ public class Card
         List<Effect> newEffs = new List<Effect>();
         foreach (Effect e in effects)
             newEffs.Add(e);
-        return new Card(ID,name, attack, hp, newEffs, divineShield, taunt, type,cardID);
+        Card c = new Card(ID, name, attack, hp, newEffs, poisonous, divineShield, taunt, type, tavernTier, cardID);
+        c.golden = golden;
+        return c;
     }
 
     public bool Compare(Card other, HearthstoneBoard board, HearthstoneBoard otherBoard)

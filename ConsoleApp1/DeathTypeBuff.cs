@@ -16,7 +16,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: deathrattletypebuff: " + user.getReadableName());
+        board.printDebugMessage("Performing action: deathrattletypebuff: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         foreach (Card c in board.getBoardFromMinion(user))
         {
            if (c.typeMatches(type))
@@ -39,6 +39,11 @@ using System.Threading.Tasks;
         if (type != ((DeathTypeBuff)other).type)
             return false;
         return true;
+    }
+
+    public override Effect makeGolden()
+    {
+        return new DeathTypeBuff(buff * 2, type);
     }
 }
 

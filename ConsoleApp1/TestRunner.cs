@@ -25,6 +25,10 @@ namespace ConsoleApp1
             performTest(testMecharooFullBoard);
             performTest(testRatPackFullBoard);
             performTest(testMamaBear);
+            performTest(testOverkillIronhide);
+            performTest(testOverkillDragon);
+            performTest(testPoison);
+            performTest(testKangor);
 
             Console.ReadLine();
 
@@ -57,6 +61,7 @@ namespace ConsoleApp1
 
                 b.printState();
                 Console.WriteLine("#####");
+                b.printEvents = true;
                 HearthstoneBoard res = b.simulateResults(1)[0];
                 Console.WriteLine(testname + " done. Board state: ");
                 res.printState();
@@ -305,6 +310,68 @@ namespace ConsoleApp1
             expected.Add(exp1);
             return "test mama bear";
         }
+
+        public static string testOverkillIronhide(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronhideDirehorn));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(1, 3));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(1,20));
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronhideDirehorn).setStats(7,3), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronhideToken) };
+            expected.Add(exp1);
+            return "test overkill ironhide";
+        }
+
+        public static string testOverkillDragon(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.HeraldOfFlame));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus));
+          
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.HeraldOfFlame).setStats(5, 3)};
+            expected.Add(exp1);
+            return "test overkill dragon";
+        }
+
+        public static string testKangor(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Mecharoo));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.KangorsApprentice));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(1,1));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(1, 1));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(8,8));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Mecharoo), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MecharooToken) };
+            expected.Add(exp1);
+            return "test kangor";
+        }
+
+        public static string testPoison(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Maexxna));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Maexxna));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            expected.Add(exp1);
+            return "test poison";
+        }
+
+
+        
+
 
     }
 }

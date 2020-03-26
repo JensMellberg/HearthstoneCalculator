@@ -43,6 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
+    <Compile Include="KangorSummon.cs" />
+    <Compile Include="OverKillDamage.cs" />
+    <Compile Include="OverKillSpawnGolden.cs" />
+    <Compile Include="OverKillSpawn.cs" />
+    <Compile Include="OverKillAction.cs" />
+    <Compile Include="DeathRattleSummonGolden.cs" />
+    <Compile Include="RatSummonGolden.cs" />
     <Compile Include="RatSummon.cs" />
     <Compile Include="GetDamageAction.cs" />
     <Compile Include="MurlocDmg.cs" />
@@ -64,8 +71,8 @@
     <Compile Include="Card.cs" />
     <Compile Include="CardCreatorFactory.cs" />
     <Compile Include="StatisticsManager.cs" />
+    <Compile Include="StatisticsChecker.cs" />
     <Compile Include="TestRunner.cs" />
-    <Compile Include="TripleDeathRattle.cs" />
     <Compile Include="DoubleDeathRattle.cs" />
     <Compile Include="Effect.cs" />
     <Compile Include="ExceptionWithMessageWhyDoesntCSharpHaveItDeafaultComeOne.cs" />

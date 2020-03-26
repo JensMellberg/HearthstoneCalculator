@@ -6,9 +6,29 @@ using System.Threading.Tasks;
 
    public class BoardSide : List<Card>
     {
-        public BoardSide copy()
+    public int tavernTier;
+    public List<DeadCard> graveyard = new List<DeadCard>();
+
+    public BoardSide(List<DeadCard> graveyard, int tier)
     {
-        BoardSide result = new BoardSide();
+        this.graveyard = graveyard;
+        tavernTier = tier;
+    }
+        public BoardSide(int tier)
+    {
+        tavernTier = tier;
+    }
+
+    public BoardSide()
+    {
+    }
+
+    public BoardSide copy()
+    {
+        List<DeadCard> newGy = new List<DeadCard>();
+        foreach (DeadCard e in graveyard)
+            newGy.Add(e);
+        BoardSide result = new BoardSide(newGy,tavernTier);
         foreach (Card c in this)
             result.Add(c.copy());
         return result;
@@ -31,10 +51,60 @@ using System.Threading.Tasks;
             return false;
         for (int i = 0; i < Count; i++)
         {
-            if (!this[i].Compare(other[i],board, otherBoard))
+            if (!this[i].Compare(other[i], board, otherBoard))
                 return false;
         }
+
         return true;
+    }
+
+    public bool doStartOfTurnEffect(HearthstoneBoard board)
+    {
+        if (Count == 0)
+            return false;
+        int c = 0;
+
+        while (c < Count)
+        {
+            if (this[c].attackPriority != Card.MAX_PRIORITY)
+            {
+                this[c].performedAction(new StartofCombatAction(), board);
+                this[c].attackPriority = Card.MAX_PRIORITY;
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public struct DeadCard
+    {
+        CardCreatorFactory.Cards card;
+        bool gold;
+        public Card.Type type;
+        public DeadCard(CardCreatorFactory.Cards card, bool gold, Card.Type type)
+        {
+            this.type = type;
+            this.card = card;
+            this.gold = gold;
+        }
+        public bool Compare(DeadCard other)
+        {
+            if (type != other.type)
+                return false;
+            if (card != other.card)
+                return false;
+            if (gold != other.gold)
+                return false;
+            return true;
+        }
+        public Card revive()
+        {
+            if (gold)
+                return CardCreatorFactory.createGoldenFromName(card);
+            else
+                return CardCreatorFactory.createFromName(card);
+        }
     }
   
     }

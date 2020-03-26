@@ -14,7 +14,7 @@ public abstract class Effect
 
        public void performedAction(Action a, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Determining if action triggers effect ("+a.getName()+") on card: "+user.getReadableName());
+        board.printDebugMessage("Determining if action triggers effect (" +a.getName()+") on card: "+user.getReadableName());
         if (triggerFromAction(a))
             doAction(a,user, board, alwaysUse);
 
@@ -29,6 +29,7 @@ public abstract class Effect
 
 
     public abstract bool Compare(Effect other);
-        
+
+    public abstract Effect makeGolden();
         
 }

@@ -3,8 +3,22 @@ using System.Collections.Generic;
 
 public class HearthstoneBoard
 {
+    public enum OutputPriority
+    {
+        NONE = 0,
+        DAMAGES = 1,
+        ATTACKERS = 2,
+        BOARDCHANGES = 3,
+        EFFECTTRIGGERS = 4,
+        COMMUNICATION = 5,
+        ALL = 6
+
+    }
+
+
     public BoardSide p1Board = new BoardSide();
     public BoardSide p2Board = new BoardSide();
+    public OutputPriority printPriority = OutputPriority.NONE;
     public HearthstoneBoard()
     {
 
@@ -24,13 +38,12 @@ public class HearthstoneBoard
         else
             throw new CardDoesNotExistException("getPlayerFromMinion failed: Card does not exist: "+c.ID);
     }
-
-    public void addNewMinionToBoard(int player, Card c, int position)
+    public void addNewMinionToBoard(BoardSide current, Card c, int position)
     {
         c.justCreated = true;
-        Console.WriteLine("Minion added to board " + player + ": " + c.ID);
-        BoardSide current = getBoardFromPlayer(player);
-        Console.WriteLine("CURRENT IS NOW :" + current.Count);
+        printDebugMessage("Minion added to board " + (current == p1Board ? 1 : 2) + ": " + c.ID, OutputPriority.BOARDCHANGES);
+      
+        printDebugMessage("CURRENT IS NOW :" + current.Count, OutputPriority.COMMUNICATION);
         if (current.Count == 8)
             return;
         else
@@ -46,6 +59,10 @@ public class HearthstoneBoard
 
         }
     }
+    public void addNewMinionToBoard(int player, Card c, int position)
+    {
+        addNewMinionToBoard(getBoardFromPlayer(player), c, position);
+    }
     public BoardSide getBoardFromMinion(Card c)
     {
        return  getBoardFromPlayer(getPlayerFromMinion(c));
@@ -60,7 +77,11 @@ public class HearthstoneBoard
       return player == 1 ? p1Board : p2Board;
     }
 
-
+    public void printDebugMessage(string msg, OutputPriority prio)
+    {
+        if (printPriority >= prio)
+            Console.WriteLine(msg);
+    }
 
     public int changePlayer(int player)
     {
@@ -120,29 +141,42 @@ public class HearthstoneBoard
             attacker = 2;
         else
         {
-            Random rnd = new Random();
             attacker = rnd.Next(1, 3);
         }
+        doStartOfTurnEffects(attacker);
         setAttackPriorities(1);
         setAttackPriorities(2);
+       
         while (newBoard.doTurnIfNotOver(attacker))
             attacker = changePlayer(attacker);
 
         
         return newBoard;
+    }
+
+    public void doStartOfTurnEffects(int starter)
+    {
+        BoardSide start = getBoardFromPlayer(starter);
+        BoardSide other = starter == 1 ? p2Board : p1Board;
+        while (start.doStartOfTurnEffect(this) || other.doStartOfTurnEffect(this))
+        { }
 
     }
 
-    public bool doTurnIfNotOver(int player)
+   
+    //Positive if player 1 win
+    public int getFinalizedDamage()
     {
-        if (p1Board.Count == 0 || p2Board.Count == 0)
-            return false;
-        else
-        {
-            doTurn(player);
-            return true;
-        }
-
+        int win = getWinner();
+        BoardSide current = win == 1 ? p1Board : p2Board;
+        int multiplier = win == 1 ? 1 : -1;
+        if (win == 0)
+            return 0;
+        int total = 0;
+        foreach (Card c in current)
+            total += c.tavernTier;
+        return (total + current.tavernTier) * multiplier;
+        
     }
 
     public int getWinner()
@@ -157,7 +191,7 @@ public class HearthstoneBoard
 
     public void setAttackPriorities(int player)
     {
-        Console.WriteLine("Setting attack priorities");
+        printDebugMessage("Setting attack priorities", OutputPriority.EVENTS);
         BoardSide current = getBoardFromPlayer(player);
         for (int i = 0; i < current.Count; i++)
             current[i].attackPriority = i;
@@ -173,9 +207,20 @@ public class HearthstoneBoard
         return c;
     }
 
+    public bool doTurnIfNotOver(int player)
+    {
+        if (p1Board.Count == 0 || p2Board.Count == 0)
+            return false;
+        else
+        {
+            doTurn(player);
+            return true;
+        }
+
+    }
     public void doTurn(int player)
     {
-        Console.WriteLine("Player " + player + " attacking.");
+        printDebugMessage("Player " + player + " attacking.",OutputPriority.ATTACKERS);
         BoardSide current = getBoardFromPlayer(player);
         BoardSide other = player == 1 ? p2Board : p1Board;
 
@@ -187,18 +232,26 @@ public class HearthstoneBoard
         }
 
         Card target;
-        Random rnd = new Random();
+        
         List<Card> taunts = other.getTaunts();
         if (taunts.Count == 0)
-            target = other[rnd.Next(0, other.Count)];
+        {
+            int res = rnd.Next(0, other.Count);
+            if (other.Count== 2)
+            {
+                counts[res]++;
+            }
+            target = other[res];
+        }
         else
             target = taunts[rnd.Next(0, taunts.Count)];
         attacker.performAttack(target, this);
     }
+    public static int[] counts = new int[2];
 
     public void killOf(Card c)
     {
-        Console.WriteLine("Card is killed of: "+c.getReadableName());
+        printDebugMessage("Card is killed of: " +c.getReadableName(), OutputPriority.DAMAGES);
         BoardSide current = p1Board.Contains(c) ? p1Board : p2Board;
         if (!p2Board.Contains(c) && !p1Board.Contains(c))
             throw new CardDoesNotExistException("killOf failed: card does not exist: "+c.ID);
@@ -212,6 +265,7 @@ public class HearthstoneBoard
            
         }
         current.Remove(c);
+        current.graveyard.Add(new BoardSide.DeadCard(c.cardID, c.golden, c.getCardType()));
       
     }
 
@@ -242,6 +296,7 @@ public class HearthstoneBoard
 
     public HearthstoneBoard copy() {
         HearthstoneBoard board = new HearthstoneBoard();
+        board.printPriority = printPriority;
         board.p1Board = p1Board.copy();
         board.p2Board = p2Board.copy();
         return board;

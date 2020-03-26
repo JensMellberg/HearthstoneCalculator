@@ -15,5 +15,45 @@ namespace ConsoleApp1
                 wins[b.getWinner()]++;
             return new double[] { wins[0] / boards.Count, wins[1] / boards.Count, wins[2] / boards.Count };
         }
+
+        public static List<DmgDistEntry> calculateDmgDistributions(List<HearthstoneBoard> boards)
+        {
+            List<DmgDistEntry> ret = new List<DmgDistEntry>();
+            var counts = new SortedDictionary<int, int>();
+            foreach (HearthstoneBoard b in boards)
+            {
+                int dmg = b.getFinalizedDamage();
+                if (counts.ContainsKey(dmg))
+                    counts[dmg] = counts[dmg] + 1;
+                else
+                    counts[dmg] = 1;
+            }
+            foreach (KeyValuePair<int, int> entry in counts)
+                ret.Add(new DmgDistEntry(entry.Key, (double)entry.Value/(double)boards.Count));
+            return ret;
+
+        }
+
+        public static void printReadableResult(List<DmgDistEntry> dmgdist)
+        {
+            foreach (DmgDistEntry d in dmgdist)
+            {
+                Console.WriteLine("Damage distributions: ");
+                Console.WriteLine(d.damage + ": " + d.percentage + "%");
+            }
+        } 
+
+
+
+        public struct DmgDistEntry
+        {
+            public DmgDistEntry(int dmg, double perc)
+            {
+                damage = dmg;
+                percentage = Math.Round(perc*100,1);
+            }
+          public  int damage;
+            public double percentage;
+        }
     }
 }

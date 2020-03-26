@@ -15,7 +15,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: Murloc damage bonus " + user);
+        board.printDebugMessage("Performing action: Murloc damage bonus " + user);
         user.tempAttackBonus -= bonus;
         foreach (Card c in board.p1Board)
         {
@@ -27,6 +27,11 @@ using System.Threading.Tasks;
             if (c.typeMatches(Card.Type.Murloc))
                 user.tempAttackBonus += bonus;
         }
+    }
+
+    public override Effect makeGolden()
+    {
+        return new MurlocDmg(bonus * 2);
     }
 
     public override bool triggerFromAction(Action a)

@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathRattleSummon : Effect
+   public class DeathRattleSummonGolden : Effect
 
     {
     CardCreatorFactory.Cards summon;
-    public DeathRattleSummon(CardCreatorFactory.Cards summon) : base()
+    public DeathRattleSummonGolden(CardCreatorFactory.Cards summon) : base()
     {
         this.summon = summon;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: deathrattlesummon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
-    }
-    public override Effect makeGolden()
-    {
-        return new DeathRattleSummonGolden(summon);
+        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
     }
 
+    public override Effect makeGolden()
+    {
+        throw new NotImplementedException();
+    }
     public override bool triggerFromAction(Action a)
     {
         if (a is DeadAction)
@@ -32,7 +32,7 @@ using System.Threading.Tasks;
     {
         if (!(other is DeathRattleSummon))
             return false;
-        if (summon != ((DeathRattleSummon)other).summon)
+        if (summon != ((DeathRattleSummonGolden)other).summon)
             return false;
         return true;
     }

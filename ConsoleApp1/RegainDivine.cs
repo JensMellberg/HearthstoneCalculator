@@ -12,7 +12,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: regain divine shield: " + user);
+        board.printDebugMessage("Performing action: regain divine shield: " + user);
         user.setDivineShield(true);
     }
     public override bool triggerFromAction(Action a)
@@ -26,6 +26,10 @@ using System.Threading.Tasks;
     public override bool Compare(Effect other)
     {
         return other is RegainDivine;
+    }
+    public override Effect makeGolden()
+    {
+        return this;
     }
 
 

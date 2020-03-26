@@ -12,9 +12,14 @@ using System.Threading.Tasks;
     {
         this.times = times;
     }
+    public override Effect makeGolden()
+    {
+        return new DeathRattleDivine(times * 2);
+    }
+
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: deathrattledivine: " + user);
+        board.printDebugMessage("Performing action: deathrattledivine: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         bool stop = true;
         BoardSide userBoard = board.getBoardFromMinion(user);
 

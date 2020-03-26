@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class RatSummon : Effect
+   public class RatSummonGolden : Effect
 
     {
     CardCreatorFactory.Cards summon;
-    public RatSummon(CardCreatorFactory.Cards summon) : base()
+    public RatSummonGolden(CardCreatorFactory.Cards summon) : base()
     {
         this.summon = summon;
     }
@@ -17,7 +17,7 @@ using System.Threading.Tasks;
         board.printDebugMessage("Performing action: ratsummon: " + user);
         int count = user.getAttack(board);
         for (int i = 0; i < count; i++)
-             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i);
+             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i);
     }
     public override bool triggerFromAction(Action a)
     {
@@ -27,16 +27,16 @@ using System.Threading.Tasks;
     }
     public override bool Compare(Effect other)
     {
-        if (!(other is RatSummon))
+        if (!(other is RatSummonGolden))
             return false;
-        if (summon != ((RatSummon)other).summon)
+        if (summon != ((RatSummonGolden)other).summon)
             return false;
         return true;
     }
+
     public override Effect makeGolden()
     {
-        return new RatSummonGolden(summon);
+        throw new NotImplementedException();
     }
-
 }
 

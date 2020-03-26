@@ -15,11 +15,16 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: Adjacent + 1 from: " + user);
+        board.printDebugMessage("Performing action: Adjacent + 1 from: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         foreach (Card c in alwaysUse)
         {
             c.tempAttackBonus += 1;
         }
+    }
+
+    public override Effect makeGolden()
+    {
+        return new AdjEffPlus(bonus * 2);
     }
 
     public override bool triggerFromAction(Action a)

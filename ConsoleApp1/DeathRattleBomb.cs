@@ -12,9 +12,15 @@ using System.Threading.Tasks;
     {
         this.times = times;
     }
+
+    public override Effect makeGolden()
+    {
+        return new DeathRattleBomb(times * 2);
+    }
+
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: bomb deathrattle: " + user);
+        board.printDebugMessage("Performing action: bomb deathrattle: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         BoardSide opponentBoard = board.getOpponentBoardFromMinion(user);
 
         for (int i = 0; i < times; i++)
@@ -22,7 +28,7 @@ using System.Threading.Tasks;
             if (opponentBoard.Count == 0)
                 return;
             int target = HearthstoneBoard.getRandomNumber(0, opponentBoard.Count);
-            opponentBoard[target].dealDamage(4, board);
+            user.causeDamageToTarget(opponentBoard[target], board, 4);
         }
     }
     public override bool triggerFromAction(Action a)

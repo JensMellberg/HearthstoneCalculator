@@ -14,12 +14,17 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        Console.WriteLine("Performing action: deathrattlebuff: " + user.getReadableName());
+        board.printDebugMessage("Performing action: deathrattlebuff: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         foreach (Card c in board.getBoardFromMinion(user))
         {
             c.addStats(buff, buff);
         }
     }
+    public override Effect makeGolden()
+    {
+        return new DeathBuff(buff * 2);
+    }
+
     public override bool triggerFromAction(Action a)
     {
         if (a is DeadAction)
