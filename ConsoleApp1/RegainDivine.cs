@@ -12,7 +12,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: regain divine shield: " + user);
+        board.printDebugMessage("Performing action: regain divine shield: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         user.setDivineShield(true);
     }
     public override bool triggerFromAction(Action a)

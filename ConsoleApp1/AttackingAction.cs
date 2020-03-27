@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
     public class AttackingAction : Action
     {
+   public Card target;
+    public AttackingAction(Card target)
+    {
+        this.target = target;
+    }
     public string getName()
     {
         return "AttackingAction";

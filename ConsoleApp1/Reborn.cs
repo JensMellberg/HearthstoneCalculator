@@ -14,7 +14,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: reborn: " + user.getReadableName());
+        board.printDebugMessage("Performing action: reborn: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         if (golden)
              board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
         else

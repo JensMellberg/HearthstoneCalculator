@@ -4,50 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathRattleBomb : Effect
+   public class SoTDragonFire : Effect
 
     {
     int times;
-    public DeathRattleBomb(int times) : base()
+    public SoTDragonFire(int times) : base()
     {
         this.times = times;
     }
 
     public override Effect makeGolden()
     {
-        return new DeathRattleBomb(times * 2);
+        return new SoTDragonFire(times * 2);
     }
 
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: bomb deathrattle: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
+        board.printDebugMessage("Performing action: start of turn fire: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         BoardSide opponentBoard = board.getOpponentBoardFromMinion(user);
-        List<Card> targets = new List<Card>();
+        BoardSide current = board.getBoardFromMinion(user);
+        int counter = 0;
+        foreach (Card c in current)
+            if (c.typeMatches(Card.Type.Dragon))
+                counter++;
         for (int i = 0; i < times; i++)
         {
             if (opponentBoard.Count == 0)
                 return;
-            Card target = opponentBoard.getRandomCardAlive();
-            if (target == null)
-                return;
-            user.causeDamageToTarget(target, board, 4);
-            targets.Add(target);
+            int target = HearthstoneBoard.getRandomNumber(0, opponentBoard.Count);
+            user.causeDamageToTarget(opponentBoard[target], board, counter);
         }
-        foreach (Card c in targets)
-            c.deathCheck(board);
     }
     public override bool triggerFromAction(Action a)
     {
-        if (a is DeadAction)
+        if (a is StartofCombatAction)
             return true;
         return false;
     }
 
     public override bool Compare(Effect other)
     {
-        if (!(other is DeathRattleBomb))
+        if (!(other is SoTDragonFire))
             return false;
-        if (times != ((DeathRattleBomb)other).times)
+        if (times != ((SoTDragonFire)other).times)
             return false;
         return true;
     }

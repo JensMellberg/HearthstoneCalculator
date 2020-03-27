@@ -14,7 +14,7 @@ public abstract class Effect
 
        public void performedAction(Action a, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Determining if action triggers effect (" +a.getName()+") on card: "+user.getReadableName());
+       // board.printDebugMessage("Determining if action triggers effect (" +a.getName()+") on card: "+user.getReadableName(), HearthstoneBoard.OutputPriority.ALL);
         if (triggerFromAction(a))
             doAction(a,user, board, alwaysUse);
 

@@ -8,18 +8,21 @@ using System.Threading.Tasks;
 
     {
     CardCreatorFactory.Cards summon;
-    public DeathRattleSummon(CardCreatorFactory.Cards summon) : base()
+    int count;
+    public DeathRattleSummon(CardCreatorFactory.Cards summon, int count) : base()
     {
+        this.count = count;
         this.summon = summon;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: deathrattlesummon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
+        for (int i = 0; i < count; i++)
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i);
     }
     public override Effect makeGolden()
     {
-        return new DeathRattleSummonGolden(summon);
+        return new DeathRattleSummonGolden(summon,count);
     }
 
     public override bool triggerFromAction(Action a)
@@ -33,6 +36,8 @@ using System.Threading.Tasks;
         if (!(other is DeathRattleSummon))
             return false;
         if (summon != ((DeathRattleSummon)other).summon)
+            return false;
+        if (count != ((DeathRattleSummon)other).count)
             return false;
         return true;
     }

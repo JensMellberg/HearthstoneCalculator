@@ -4,43 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathRattleDivine : Effect
+   public class Fiendish : Effect
 
     {
     int times;
-    public DeathRattleDivine(int times) : base()
+    public Fiendish(int times) : base()
     {
         this.times = times;
     }
     public override Effect makeGolden()
     {
-        return new DeathRattleDivine(times * 2);
+        return new Fiendish(times * 2);
     }
 
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: deathrattledivine: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        bool stop = true;
+        board.printDebugMessage("Performing action: deathrattle dmg bonus: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
+
         BoardSide userBoard = board.getBoardFromMinion(user);
+
+        if (userBoard.Count == 1)
+            return;
+
 
         for (int i = 0; i < times; i++)
         {
-            foreach (Card c in userBoard)
-            {
-                if (c != user && !c.divineShield)
-                {
-                    stop = false;
-                }
-            }
-            if (stop)
-                return;
             while (true)
             {
                 int target = HearthstoneBoard.getRandomNumber(0, userBoard.Count);
-                if (!userBoard[target].divineShield && userBoard[target] != user)
+                if (userBoard[target] != user)
                 {
-                    board.printDebugMessage("Giving divine shield to " + userBoard[target].getReadableName(), HearthstoneBoard.OutputPriority.INTENSEDEBUG);
-                    userBoard[target].setDivineShield(true);
+                    board.printDebugMessage("Giving damage bonus to " + userBoard[target].getReadableName(),HearthstoneBoard.OutputPriority.INTENSEDEBUG);
+                    userBoard[target].addAttack(user.getAttack(board));
                     break; ;
                 }
             }
@@ -56,9 +51,9 @@ using System.Threading.Tasks;
 
     public override bool Compare(Effect other)
     {
-        if (!(other is DeathRattleDivine))
+        if (!(other is Fiendish))
             return false;
-        if (times != ((DeathRattleDivine)other).times)
+        if (times != ((Fiendish)other).times)
             return false;
         return true;
     }

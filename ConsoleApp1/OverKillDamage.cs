@@ -20,10 +20,19 @@ using System.Threading.Tasks;
 
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: overkill fire: " + user);
+        board.printDebugMessage("Performing action: overkill fire: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         BoardSide opponentBoard = board.getOpponentBoardFromMinion(user);
+      
         if (opponentBoard.Count != 0)
-            user.causeDamageToTarget(opponentBoard[0], board, dmg);
+        {
+            for (int i = 0; i < opponentBoard.Count; i++)
+                if (opponentBoard[i].isAlive())
+                {
+                    user.causeDamageToTarget(opponentBoard[i], board, dmg);
+                    break;
+                }
+        }
+           
 
 
       

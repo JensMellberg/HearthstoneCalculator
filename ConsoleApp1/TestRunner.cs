@@ -8,6 +8,7 @@ namespace ConsoleApp1
 {
     public class TestRunner
     {
+        public static HearthstoneBoard.OutputPriority outputPriority = HearthstoneBoard.OutputPriority.ATTACKERS;
         public static void runTests()
         {
             performTest(testCase0);
@@ -29,7 +30,14 @@ namespace ConsoleApp1
             performTest(testOverkillDragon);
             performTest(testPoison);
             performTest(testKangor);
-
+            performTest(testFiendish);
+            performTest(testSoT);
+            performTest(testGlyphGuardian);
+            performTest(testHydra);
+            performTest(testMultipleSummon);
+            performTest(testNadina);
+            performTest(testJunkbot);
+            performTest(testGhoul);
             Console.ReadLine();
 
 
@@ -61,7 +69,7 @@ namespace ConsoleApp1
 
                 b.printState();
                 Console.WriteLine("#####");
-                b.printEvents = true;
+                b.printPriority = outputPriority;
                 HearthstoneBoard res = b.simulateResults(1)[0];
                 Console.WriteLine(testname + " done. Board state: ");
                 res.printState();
@@ -154,11 +162,11 @@ namespace ConsoleApp1
         public static string testKaboom(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
         {
             b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.KaboomBot));
-            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DireWolfAlpha));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.ShieldedMinibot));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule).setDivineShield(false));
 
             HearthstoneBoard exp1 = new HearthstoneBoard();
-            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DireWolfAlpha) };
+            exp1.p2Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule).setDivineShield(false) };
             expected.Add(exp1);
             return "test kaboom";
 
@@ -369,8 +377,141 @@ namespace ConsoleApp1
             return "test poison";
         }
 
+        public static string testSoT(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp));
+           // b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp));
 
-        
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp) };
+            expected.Add(exp1);
+            return "test red whelp start of turn";
+        }
+
+        public static string testGlyphGuardian(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.GlyphGuardian));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat).setStats(1,6));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus));
+            // b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            
+            expected.Add(exp1);
+            return "test glyph guardian";
+        }
+
+        public static string testFiendish(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.FiendishServant));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DireWolfAlpha));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(4,9));
+            // b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RedWhelp));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DireWolfAlpha) };
+            expected.Add(exp1);
+
+            HearthstoneBoard exp2 = new HearthstoneBoard();
+            expected.Add(exp2);
+
+            return "test fiendish";
+        }
+
+
+        public static string testHydra(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(1, 2));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.HarvestGolem));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.CaveHydra));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.HarvestGolem).setStats(2, 1) };
+            expected.Add(exp1);
+            return "test hydra";
+        }
+
+        public static string testMultipleSummon(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat).setStats(10,10));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Voidlord));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat).setStats(9,3));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat).setStats(10, 8),
+            CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat)
+            ,CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Voidwalker),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Voidwalker)};
+            expected.Add(exp1);
+            return "test multiple summon";
+        }
+        public static string testNadina(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.NadinaTheRed));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.GlyphGuardian));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.CaveHydra).setStats(4,4));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.GlyphGuardian).setDivineShield(true),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat) };
+            expected.Add(exp1);
+            return "test nadina";
+        }
+
+        public static string testJunkbot(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei).setTaunt(true));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Junkbot));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(2,2));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.ScavengingHyena));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Junkbot).setStats(3,5)};
+            expected.Add(exp1);
+            return "test junkbot";
+        }
+
+        public static string testGhoul(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.UnstableGhoul).setStats(2,2));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Mecharoo));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Mecharoo));
+
+
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p2Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule).setStats(2, 2).setDivineShield(false), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MecharooToken) };
+            expected.Add(exp1);
+            return "test ghoul";
+        }
+
+
+
 
 
     }

@@ -4,48 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class MurlocDmg : Effect
-
+   public class DeathAoE : Effect
 
     {
-    int bonus;
-    public MurlocDmg(int bonus) : base()
+    int dmg;
+    public DeathAoE(int dmg)
     {
-        this.bonus = bonus;
+        this.dmg = dmg;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: Murloc damage bonus " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        user.tempAttackBonus -= bonus;
+        board.printDebugMessage("Performing action: death AoE: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
+        List<Card> targets = new List<Card>();
         foreach (Card c in board.p1Board)
         {
-            if (c.typeMatches(Card.Type.Murloc))
-                user.tempAttackBonus += bonus;
+            if (c != user)
+                targets.Add(c);
+              
         }
         foreach (Card c in board.p2Board)
         {
-            if (c.typeMatches(Card.Type.Murloc))
-                user.tempAttackBonus += bonus;
+            if (c != user)
+                targets.Add(c);
         }
+        foreach (Card c in targets)
+            user.causeDamageToTarget(c, board, dmg);
     }
-
     public override Effect makeGolden()
     {
-        return new MurlocDmg(bonus * 2);
+        return new DeathAoE(dmg * 2);
     }
 
     public override bool triggerFromAction(Action a)
     {
-        if (a is GetDamageAction)
+        if (a is DeadAction)
             return true;
         return false;
     }
 
     public override bool Compare(Effect other)
     {
-        if (!(other is MurlocDmg))
+        if (!(other is DeathAoE))
             return false;
-        if (bonus != ((MurlocDmg)other).bonus)
+        if (dmg != ((DeathAoE)other).dmg)
             return false;
         return true;
     }

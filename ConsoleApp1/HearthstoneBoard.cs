@@ -11,14 +11,16 @@ public class HearthstoneBoard
         BOARDCHANGES = 3,
         EFFECTTRIGGERS = 4,
         COMMUNICATION = 5,
-        ALL = 6
+        INTENSEDEBUG = 6,
+        ALL = 7
 
     }
 
-
+    public bool turnbyturn = false;
     public BoardSide p1Board = new BoardSide();
     public BoardSide p2Board = new BoardSide();
     public OutputPriority printPriority = OutputPriority.NONE;
+    public List<Card> pendingDeaths = new List<Card>();
     public HearthstoneBoard()
     {
 
@@ -88,6 +90,11 @@ public class HearthstoneBoard
         return player == 1 ? 2 : 1;
     }
 
+    public void addToPendingDeath(Card c)
+    {
+        pendingDeaths.Add(c);
+    }
+
     public int getPositionFromMinion(Card c)
     {
         if (p1Board.Contains(c))
@@ -98,7 +105,15 @@ public class HearthstoneBoard
             throw new CardDoesNotExistException("getPositionFromMinion failed: card does not exist: " + c.ID);
     }
 
-
+    public void deathCheck()
+    {
+        if (pendingDeaths.Count == 0)
+            return;
+        pendingDeaths[0].deathCheck(this);
+        pendingDeaths.RemoveAt(0);
+           
+        deathCheck();
+    }
 
     public List<Card> getAdjacents(Card c)
     {
@@ -131,6 +146,14 @@ public class HearthstoneBoard
         }
         return results;
     }
+    public HearthstoneBoard turnByTurnSimulation()
+    {
+        turnbyturn = true;
+        printPriority = OutputPriority.NONE;
+        return simulateResult();
+    }
+
+
     public HearthstoneBoard simulateResult()
     {
         HearthstoneBoard newBoard = this.copy();
@@ -143,9 +166,9 @@ public class HearthstoneBoard
         {
             attacker = rnd.Next(1, 3);
         }
-        doStartOfTurnEffects(attacker);
-        setAttackPriorities(1);
-        setAttackPriorities(2);
+        newBoard.doStartOfTurnEffects(attacker);
+        newBoard.setAttackPriorities(1);
+        newBoard.setAttackPriorities(2);
        
         while (newBoard.doTurnIfNotOver(attacker))
             attacker = changePlayer(attacker);
@@ -156,10 +179,16 @@ public class HearthstoneBoard
 
     public void doStartOfTurnEffects(int starter)
     {
+        printDebugMessage("Doing start of turn effects", OutputPriority.INTENSEDEBUG);
         BoardSide start = getBoardFromPlayer(starter);
         BoardSide other = starter == 1 ? p2Board : p1Board;
-        while (start.doStartOfTurnEffect(this) || other.doStartOfTurnEffect(this))
-        { }
+        bool flag = true;
+        while (flag)
+        {
+            flag = false;
+            flag = start.doStartOfTurnEffect(this) || flag;
+            flag = other.doStartOfTurnEffect(this) || flag;
+        }
 
     }
 
@@ -191,11 +220,11 @@ public class HearthstoneBoard
 
     public void setAttackPriorities(int player)
     {
-        printDebugMessage("Setting attack priorities", OutputPriority.EVENTS);
+      
         BoardSide current = getBoardFromPlayer(player);
+        printDebugMessage("Setting attack priorities for player " + player + " count: " + current.Count, OutputPriority.COMMUNICATION);
         for (int i = 0; i < current.Count; i++)
             current[i].attackPriority = i;
-
     }
 
     public Card getHighestPriorityCard(BoardSide b)
@@ -210,9 +239,13 @@ public class HearthstoneBoard
     public bool doTurnIfNotOver(int player)
     {
         if (p1Board.Count == 0 || p2Board.Count == 0)
+        {
+            printDebugMessage("Determined that it is game over, one side is empty", OutputPriority.INTENSEDEBUG);
             return false;
+        }
         else
         {
+            printDebugMessage("Determining that its not game over: " + p1Board.Count + " " + p2Board.Count, OutputPriority.INTENSEDEBUG);
             doTurn(player);
             return true;
         }
@@ -249,6 +282,12 @@ public class HearthstoneBoard
     }
     public static int[] counts = new int[2];
 
+    public bool containsCard(Card c)
+    {
+        return p2Board.Contains(c) || p1Board.Contains(c);
+            
+    }
+
     public void killOf(Card c)
     {
         printDebugMessage("Card is killed of: " +c.getReadableName(), OutputPriority.DAMAGES);
@@ -266,11 +305,17 @@ public class HearthstoneBoard
         }
         current.Remove(c);
         current.graveyard.Add(new BoardSide.DeadCard(c.cardID, c.golden, c.getCardType()));
-      
+
+        printDebugMessage("Card killed: count is now: " + current.Count, OutputPriority.INTENSEDEBUG);
+        printDebugMessage("Card killed: count is now on p2: " + p2Board.Count, OutputPriority.INTENSEDEBUG);
     }
 
     public void printState()
     {
+        var color = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("====================");
+        Console.ForegroundColor = color;
         Console.WriteLine("Board 1:");
         foreach (Card c in p1Board)
         {
@@ -281,6 +326,9 @@ public class HearthstoneBoard
         {
             c.printState();
         }
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("====================");
+        Console.ForegroundColor = color;
 
     }
 
@@ -297,6 +345,7 @@ public class HearthstoneBoard
     public HearthstoneBoard copy() {
         HearthstoneBoard board = new HearthstoneBoard();
         board.printPriority = printPriority;
+        board.turnbyturn = turnbyturn;
         board.p1Board = p1Board.copy();
         board.p2Board = p2Board.copy();
         return board;

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: buff spawned minion: " + user);
+        board.printDebugMessage("Performing action: buff spawned minion: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         ((CardSpawnedAction)cause).spawnedCard().addAttack(dmg);
         ((CardSpawnedAction)cause).spawnedCard().addHp(hp);
     }

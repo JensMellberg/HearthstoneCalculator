@@ -14,7 +14,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: overkillspawn: " + user.getReadableName());
+        board.printDebugMessage("Performing action: overkillspawn: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(spawn).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
     }
     public override Effect makeGolden()

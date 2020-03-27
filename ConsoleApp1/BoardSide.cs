@@ -45,6 +45,27 @@ using System.Threading.Tasks;
         return res;
     }
 
+    public Card getRandomCardAlive()
+    {
+        bool flag = false;
+        foreach (Card d in this)
+            if (d.isAlive())
+            {
+                flag = true;
+                break;
+            }
+        if (!flag)
+            return null;
+        Card c = getRandomCard();
+        while (!c.isAlive())
+            c = getRandomCard();
+        return c;
+    }
+    public Card getRandomCard()
+    {
+        return this[HearthstoneBoard.getRandomNumber(0, Count)];
+    }
+
     public bool Compare(BoardSide other, HearthstoneBoard board, HearthstoneBoard otherBoard)
     {
         if (Count != other.Count)
@@ -60,6 +81,7 @@ using System.Threading.Tasks;
 
     public bool doStartOfTurnEffect(HearthstoneBoard board)
     {
+        board.printDebugMessage("Doing start of turn effect on board with count "+Count, HearthstoneBoard.OutputPriority.INTENSEDEBUG);
         if (Count == 0)
             return false;
         int c = 0;
@@ -68,10 +90,15 @@ using System.Threading.Tasks;
         {
             if (this[c].attackPriority != Card.MAX_PRIORITY)
             {
-                this[c].performedAction(new StartofCombatAction(), board);
                 this[c].attackPriority = Card.MAX_PRIORITY;
-                return true;
+                if (this[c].hasStartofTurnEffect())
+                {
+                    this[c].performedAction(new StartofCombatAction(), board);
+                    board.deathCheck();
+                    return true;
+                }
             }
+            c++;
         }
         return false;
 

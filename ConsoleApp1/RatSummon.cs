@@ -14,7 +14,7 @@ using System.Threading.Tasks;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
-        board.printDebugMessage("Performing action: ratsummon: " + user);
+        board.printDebugMessage("Performing action: ratsummon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         int count = user.getAttack(board);
         for (int i = 0; i < count; i++)
              board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i);

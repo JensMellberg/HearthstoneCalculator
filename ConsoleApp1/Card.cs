@@ -77,6 +77,14 @@ public class Card
 
     }
 
+    public bool hasStartofTurnEffect()
+    {
+        foreach (Effect e in effects)
+            if (e.triggerFromAction(new StartofCombatAction()))
+                return true;
+        return false;
+    }
+
     public void performedAction(Action a, HearthstoneBoard hearthstoneBoard)
     {
         hearthstoneBoard.printDebugMessage("Received action " + a.getName() + " on "+this.getReadableName(), HearthstoneBoard.OutputPriority.COMMUNICATION);
@@ -118,18 +126,53 @@ public class Card
             performedAction(new OverKillAction(), board);
     }
 
+    public void deathCheck(HearthstoneBoard board)
+    {
+        if (!isAlive() && board.containsCard(this))
+        {
+            this.performedAction(new DeadAction(), board);
+            board.killOf(this);
+        }
+    }
+
+    public bool isAlive()
+    {
+        return hp > 0;
+    }
+
     public void performAttack(Card target, HearthstoneBoard board)
     {
-        board.printDebugMessage("attacker: " + this.name + " defender: " + target.name, HearthstoneBoard.OutputPriority.ATTACKERS);
+        board.printDebugMessage("attacker: " + this.getReadableName() + " defender: " + target.getReadableName(), HearthstoneBoard.OutputPriority.ATTACKERS);
+        if (board.turnbyturn)
+        {
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine("Attacker: " + this.getReadableName());
+            Console.WriteLine("Defender: " + target.getReadableName());
+            Console.ReadLine();
+        }
+        this.performedAction(new AttackingAction(target),board);
         int returnAttack = target.poisonous ? 9999999 : target.getAttack(board);
         //target.dealDamage(getAttack(board), board);
         causeDamageToTarget(target, board, getAttack(board));
         this.dealDamage(returnAttack, board);
 
+        board.deathCheck();
+        //target.deathCheck(board);
+        //this.deathCheck(board);
+       
+
+
         attackPriority = Card.MAX_PRIORITY;
         board.printDebugMessage("attack perform finished from " + this.getReadableName() + " to " + target.getReadableName(), HearthstoneBoard.OutputPriority.ATTACKERS);
         if (board.printPriority >= HearthstoneBoard.OutputPriority.ATTACKERS)
         board.printState();
+
+        if (board.turnbyturn)
+        {
+            Console.WriteLine("--------------------------------------");
+            board.printState();
+            Console.ReadLine();
+        }
     }
     public void addStats(int attack, int hp)
     {
@@ -165,6 +208,12 @@ public class Card
     public Card setHp(int hp)
     {
         this.hp = hp;
+        return this;
+    }
+
+    public Card setAtk(int atk)
+    {
+        attack = atk;
         return this;
     }
 
@@ -210,13 +259,15 @@ public class Card
         if (divineShield)
         {
             divineShield = false;
+            board.printDebugMessage("Damage taken: 0 (divine shield pop) on " + getReadableName(), HearthstoneBoard.OutputPriority.DAMAGES);
             return false;
         }
         hp = hp - damage;
+        board.printDebugMessage("Damage taken: " + damage + " on " + getReadableName(),HearthstoneBoard.OutputPriority.DAMAGES);
         if (hp <= 0)
         {
-            this.performedAction(new DeadAction(), board);
-            board.killOf(this);
+            board.addToPendingDeath(this);
+            if (hp < 0)
             return true;
         }
         return false;

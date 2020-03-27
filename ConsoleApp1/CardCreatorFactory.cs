@@ -37,7 +37,87 @@ public class CardCreatorFactory
         HeraldOfFlame,
         Maexxna,
         KangorsApprentice,
-        IronSensei
+        IronSensei,
+        RedWhelp,
+        FiendishServant,
+        KindlyGrandmother,
+        Imprisoner,
+        UnstableGhoul,
+        InfestedWolf,
+        TheBeast,
+        PilotedShredder,
+        ReplicatingMenace,
+        MechanoEgg,
+        SavannahHighmane,
+        Voidlord,
+        SneedsOldShredder,
+        NadinaTheRed,
+        GhastCoiler,
+        GlyphGuardian,
+        CaveHydra,
+        MicroMachine,
+        MurlocTidehunter,
+        RockpoolHunter,
+        DragonspawnLieutenant,
+        ScavengingHyena,
+        Khadgar,
+        WaxriderTogwaggle,
+        ShifterZerus,
+        BolvarFireblood,
+        BrannBronzebeard,
+        Murozond,
+        MalGanis,
+        Razorgore,
+        FoeReaper,
+        Kalecgos,
+        ZappSlywick,
+        MurlocTidecaller,
+        WrathWeaver,
+        MetaltoothLeaper,
+        MurlocWarleader,
+        NathrezimOverseer,
+        PogoHopper,
+        StewardOfTime,
+        Zoobot,
+        ImpToken,
+        GMToken,
+        CrowdFavorite,
+        CrystalWeaver,
+        Deflectobot,
+        FelfinNavigator,
+        HangryDragon,
+        Houndmaster,
+        ImpGangBoss,
+        ScrewjankClunker,
+        SoulJuggler,
+        TwilightEmissary,
+        Annoyomodule,
+        CobaltScalebane,
+        DefenderofArgus,
+        DrakonidEnforcer,
+        FloatingWatcher,
+        MenagerieMagician,
+        SecurityRover,
+        Siegebreaker,
+        VirmenSensei,
+        Toxfin,
+        AnnihilanBattlemaster,
+        Junkbot,
+        LightfangEnforcer,
+        PrimalfinLookout,
+        StrongshellScavenger,
+        GentleMegasaur,
+        HolyMackerel,
+        ImpMama,
+        EggToken,
+        TheBeastToken,
+        Voidwalker,
+        Hyena,
+        Microbot,
+        Spider,
+
+
+
     }
     public static Card createFromName(Cards name)
     {
@@ -50,7 +130,7 @@ public class CardCreatorFactory
             case Cards.VulgarHomunculus:
                 return new Card(0, "Vulgar Homunculus", 2, 4, null, false, false, true, Card.Type.Demon,1, name);
             case Cards.Mecharoo:
-                return new Card(0, "Mecharoo", 1, 1, new List<Effect> { new DeathRattleSummon(Cards.MecharooToken) }, false, false, false, Card.Type.Mech,1, name);
+                return new Card(0, "Mecharoo", 1, 1, new List<Effect> { new DeathRattleSummon(Cards.MecharooToken,1) }, false, false, false, Card.Type.Mech,1, name);
             case Cards.Alleycat:
                 return new Card(0, "Alleycat", 1, 1, null, false, false, false, Card.Type.Beast,1, name);
             case Cards.OldMurkeye:
@@ -84,7 +164,7 @@ public class CardCreatorFactory
             case Cards.RatPack:
                 return new Card(0, "Rat Pack", 2, 2, new List<Effect> { new RatSummon(Cards.RatToken) }, false, false, false, Card.Type.Beast,2, name);
             case Cards.HarvestGolem:
-                return new Card(0, "Harvest Golem", 2, 3, new List<Effect> { new DeathRattleSummon(Cards.HarvestToken) }, false, false, false, Card.Type.Mech, 2, name);
+                return new Card(0, "Harvest Golem", 2, 3, new List<Effect> { new DeathRattleSummon(Cards.HarvestToken,1) }, false, false, false, Card.Type.Mech, 2, name);
             case Cards.HarvestToken:
                 return new Card(0, "Harvest-Token", 2, 1, null, false, false, false, Card.Type.Mech, 1, name);
             case Cards.RatToken:
@@ -101,8 +181,128 @@ public class CardCreatorFactory
                 return new Card(0, "Maexxna", 2, 8, null, true, false, false, Card.Type.Beast, 6, name);
             case Cards.KangorsApprentice:
                 return new Card(0, "Kangor's Apprentice", 3, 6, new List<Effect> { new KangorSummon(2)}, true, false, false, Card.Type.None, 6, name);
-
-                
+            case Cards.RedWhelp:
+                return new Card(0, "Red Whelp", 1, 2, new List<Effect> { new SoTDragonFire(1) }, false, false, false, Card.Type.Dragon, 1, name);
+            case Cards.GhastCoiler:
+                return new Card(0, "Ghastcoiler", 7, 7, new List<Effect> { new GhastCoilerSummon(2) }, false, false, false, Card.Type.Beast, 6, name);
+            case Cards.GlyphGuardian:
+                return new Card(0, "Glyph Guardian", 2, 4, new List<Effect> { new DoubleDmanageAtk(2) }, false, false, false, Card.Type.Dragon, 2, name);
+            case Cards.CaveHydra:
+                return new Card(0, "Cave Hydra", 2, 4, new List<Effect> { new Cleave() }, false, false, false, Card.Type.Beast, 4, name);
+            case Cards.PilotedShredder:
+                return new Card(0, "Piloted Shredder", 4, 3, new List<Effect> { new ShredderSummon(1) }, false, false, false, Card.Type.Mech, 3, name);
+            case Cards.SneedsOldShredder:
+                return new Card(0, "Sneed's Old Shredder", 5, 7, new List<Effect> { new SneedsSummon(1) }, false, false, false, Card.Type.Mech, 5, name);
+            case Cards.DragonspawnLieutenant:
+                return new Card(0, "Dragonspawn Lieutenant", 2, 3, null, false, false, false, Card.Type.Dragon, 1, name);
+            case Cards.MicroMachine:
+                return new Card(0, "Micro Machine", 1, 2, null, false, false, false, Card.Type.Mech, 1, name);
+            case Cards.MurlocTidecaller:
+                return new Card(0, "Murloc Tidecaller", 1, 2, null, false, false, false, Card.Type.Murloc, 1, name);
+            case Cards.MurlocTidehunter:
+                return new Card(0, "Murloc Tidehunter", 2, 1, null, false, false, false, Card.Type.Murloc, 1, name);
+            case Cards.RockpoolHunter:
+                return new Card(0, "Rockpool Hunter", 2, 3, null, false, false, false, Card.Type.Murloc, 1, name);
+            case Cards.WrathWeaver:
+                return new Card(0, "Wrath Weaver", 1, 1, null, false, false, false, Card.Type.None, 1, name);
+            case Cards.Imprisoner:
+                return new Card(0, "Imprisoner", 3, 3, new List<Effect> { new DeathRattleSummon(Cards.ImpToken,1) }, false, false, true, Card.Type.Demon, 2, name);
+            case Cards.ImpToken:
+                return new Card(0, "Imp Token", 1, 1, null, false, false, false, Card.Type.Demon, 1, name);
+            case Cards.KindlyGrandmother:
+                return new Card(0, "Kindly Grandmother", 1, 1, new List<Effect> { new DeathRattleSummon(Cards.GMToken,1) }, false, false, false, Card.Type.Beast, 2, name);
+            case Cards.GMToken:
+                return new Card(0, "Big Bad Wolf", 3, 2, null, false, false, false, Card.Type.Beast, 1, name);
+            case Cards.MetaltoothLeaper:
+                return new Card(0, "Metaltooth Leaper", 3, 3, null, false, false, false, Card.Type.Mech, 2, name);
+            case Cards.NathrezimOverseer:
+                return new Card(0, "Nathrezim Overseer", 2, 3,null, false, false, false, Card.Type.Demon, 2, name);
+            case Cards.PogoHopper:
+                return new Card(0, "Pogo Hopper", 1, 1, null, false, false, false, Card.Type.Mech, 2, name);
+            case Cards.StewardOfTime:
+                return new Card(0, "Steward Of Time", 3, 4, null, false, false, false, Card.Type.Dragon, 2, name);
+            case Cards.Zoobot:
+                return new Card(0, "Zoobot", 3, 3, null, false, false, false, Card.Type.Mech, 2, name);
+            case Cards.CrowdFavorite:
+                return new Card(0, "Crowd Favorite", 4, 4, null, false, false, false, Card.Type.None, 3, name);
+            case Cards.CrystalWeaver:
+                return new Card(0, "Crystal Weaver", 5, 4, null, false, false, false, Card.Type.None, 3, name);
+            case Cards.FelfinNavigator:
+                return new Card(0, "Felfin Navigator", 4, 4, null, false, false, false, Card.Type.Murloc, 3, name);
+            case Cards.HangryDragon:
+                return new Card(0, "Hangry Dragon", 4, 4, null, false, false, false, Card.Type.Dragon, 3, name);
+            case Cards.Houndmaster:
+                return new Card(0, "Houndmaster", 4, 3, null, false, false, false, Card.Type.None, 3, name);
+            case Cards.ScrewjankClunker:
+                return new Card(0, "Screwjank Clunker", 2, 5, null, false, false, false, Card.Type.Mech, 3, name);
+            case Cards.ShifterZerus:
+                return new Card(0, "Shifter Zerus", 1, 1, null, false, false, false, Card.Type.None, 3, name);
+            case Cards.TwilightEmissary:
+                return new Card(0, "Twilight Emissary", 4, 4, null, false, false, true, Card.Type.Dragon, 3, name);
+            case Cards.Annoyomodule:
+                return new Card(0, "Annoy-o-Module", 2, 4, null, false, true, true, Card.Type.Mech, 4, name);
+            case Cards.CobaltScalebane:
+                return new Card(0, "Cobalt Scalebane", 5, 5, null, false, false, false, Card.Type.Dragon, 4, name);
+            case Cards.DefenderofArgus:
+                return new Card(0, "Defender of Argus", 2, 3, null, false, false, false, Card.Type.None, 4, name);
+            case Cards.FloatingWatcher:
+                return new Card(0, "Floating Watcher", 4, 4, null, false, false, false, Card.Type.Demon, 4, name);
+            case Cards.MechanoEgg:
+                return new Card(0, "Mechano Egg", 0, 5, new List<Effect> { new DeathRattleSummon(Cards.EggToken,1) }, false, false, false, Card.Type.Mech, 4, name);
+            case Cards.EggToken:
+                return new Card(0, "Egg-Token", 8, 8, null, false, false, false, Card.Type.Mech, 1, name);
+            case Cards.MenagerieMagician:
+                return new Card(0, "Menagerie Magician", 4, 4, null, false, false, false, Card.Type.None, 4, name);
+            case Cards.Toxfin:
+                return new Card(0, "Toxfin", 1, 2, null, false, false, false, Card.Type.Murloc, 4, name);
+            case Cards.VirmenSensei:
+                return new Card(0, "Virmen Sensei", 4, 5, null, false, false, false, Card.Type.None, 4, name);
+            case Cards.AnnihilanBattlemaster:
+                return new Card(0, "Annihilan Battlemaster", 3, 1, null, false, false, false, Card.Type.Demon, 5, name);
+            case Cards.BrannBronzebeard:
+                return new Card(0, "Brann Bronzebeard", 2, 4, null, false, false, false, Card.Type.None, 5, name);
+            case Cards.LightfangEnforcer:
+                return new Card(0, "Lightfang Enforcer", 2, 2, null, false, false, false, Card.Type.None, 5, name);
+            case Cards.Murozond:
+                return new Card(0, "Murozond", 5, 5, null, false, false, false, Card.Type.Dragon, 5, name);
+            case Cards.PrimalfinLookout:
+                return new Card(0, "Primalfin Lookout", 3, 2, null, false, false, false, Card.Type.Murloc, 5, name);
+            case Cards.Razorgore:
+                return new Card(0, "Razorgore, the Untamed", 2, 4, null, false, false, false, Card.Type.Dragon, 5, name);
+            case Cards.StrongshellScavenger:
+                return new Card(0, "Strongshell Scavenger", 2, 3, null, false, false, false, Card.Type.None, 5, name);
+            case Cards.FoeReaper:
+                return new Card(0, "Foe Reaper 4000", 6, 9, new List<Effect> { new Cleave() }, false, false, false, Card.Type.Mech, 6, name);
+            case Cards.GentleMegasaur:
+                return new Card(0, "Gentle Megasaur", 5, 4, null, false, false, false, Card.Type.Beast, 6, name);
+            case Cards.Kalecgos:
+                return new Card(0, "Kalecgos, Arcane Aspect", 4, 12, null, false, false, false, Card.Type.Dragon, 6, name);
+            case Cards.Voidwalker:
+                return new Card(0, "Voidwalker", 1, 3, null, false, false, true, Card.Type.Demon, 1, name);
+            case Cards.Voidlord:
+                return new Card(0, "Voidlord", 3, 9, new List<Effect> { new DeathRattleSummon(Cards.Voidwalker,3) }, false, false, true, Card.Type.Demon, 5, name);
+            case Cards.Hyena:
+                return new Card(0, "Hyena", 2, 2, null, false, false, false, Card.Type.Beast, 1, name);
+            case Cards.Microbot:
+                return new Card(0, "Microbot", 1, 1, null, false, false, false, Card.Type.Mech, 1, name);
+            case Cards.Spider:
+                return new Card(0, "Spider", 1, 1, null, false, false, false, Card.Type.Beast, 1, name);
+            case Cards.SavannahHighmane:
+                return new Card(0, "Savannah Highmane", 6, 5, new List<Effect> { new DeathRattleSummon(Cards.Hyena, 2) }, false, false, false, Card.Type.Beast, 4, name);
+            case Cards.ReplicatingMenace:
+                return new Card(0, "Replicating Menace", 3, 1, new List<Effect> { new DeathRattleSummon(Cards.Microbot, 3) }, false, false, false, Card.Type.Mech, 3, name);
+            case Cards.InfestedWolf:
+                return new Card(0, "Infested Wolf", 3, 3, new List<Effect> { new DeathRattleSummon(Cards.Spider, 2) }, false, false, false, Card.Type.Beast, 3, name);
+            case Cards.FiendishServant:
+                return new Card(0, "Fiendish Servant", 2, 1, new List<Effect> { new Fiendish(1) }, false, false, false, Card.Type.Demon, 1, name);
+            case Cards.NadinaTheRed:
+                return new Card(0, "Nadina the Red", 7, 4, new List<Effect> { new DragonDivine(Card.Type.Dragon) }, false, false, false, Card.Type.None, 6, name);
+            case Cards.Junkbot:
+                return new Card(0, "Junkbot", 1, 5, new List<Effect> { new BuffFromDeath(2,2,Card.Type.Mech) }, false, false, false, Card.Type.Mech, 5, name);
+            case Cards.ScavengingHyena:
+                return new Card(0, "Scavenging Hyena", 2, 2, new List<Effect> { new BuffFromDeath(2, 1, Card.Type.Beast) }, false, false, false, Card.Type.Beast, 2, name);
+            case Cards.UnstableGhoul:
+                return new Card(0, "Unstable Ghoul", 1, 3, new List<Effect> { new DeathAoE(1) }, false, false, true, Card.Type.None, 2, name);
             default:
                 throw new UnknownCardException("Uknown card: " + name);
 
