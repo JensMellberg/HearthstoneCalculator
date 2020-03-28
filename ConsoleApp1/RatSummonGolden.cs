@@ -7,8 +7,8 @@ using System.Threading.Tasks;
    public class RatSummonGolden : Effect
 
     {
-    CardCreatorFactory.Cards summon;
-    public RatSummonGolden(CardCreatorFactory.Cards summon) : base()
+    string summon;
+    public RatSummonGolden(string summon) : base()
     {
         this.summon = summon;
     }
@@ -17,7 +17,7 @@ using System.Threading.Tasks;
         board.printDebugMessage("Performing action: ratsummon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         int count = user.getAttack(board);
         for (int i = 0; i < count; i++)
-             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i);
+             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,1);
     }
     public override bool triggerFromAction(Action a)
     {

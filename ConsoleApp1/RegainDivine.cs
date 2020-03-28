@@ -7,13 +7,16 @@ using System.Threading.Tasks;
    public class RegainDivine : Effect
 
     {
-    public RegainDivine() : base()
+    int dmg;
+    public RegainDivine(int dmg) : base()
     {
+        this.dmg = dmg;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: regain divine shield: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         user.setDivineShield(true);
+        user.addAttack(dmg);
     }
     public override bool triggerFromAction(Action a)
     {
@@ -25,11 +28,15 @@ using System.Threading.Tasks;
 
     public override bool Compare(Effect other)
     {
-        return other is RegainDivine;
+        if (!(other is RegainDivine))
+            return false;
+        if (dmg != ((RegainDivine)other).dmg)
+            return false;
+        return true;
     }
     public override Effect makeGolden()
     {
-        return this;
+        return new RegainDivine(dmg*2);
     }
 
 

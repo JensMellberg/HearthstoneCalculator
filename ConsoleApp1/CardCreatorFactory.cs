@@ -5,121 +5,122 @@ using System.Text;
 using System.Threading.Tasks;
 public class CardCreatorFactory
 {
-    public enum Cards
+    public class Cards
     {
-        RighteousProtector,
-        DireWolfAlpha,
-        VulgarHomunculus,
-        Mecharoo, 
-        Alleycat,
-        OldMurkeye,
-        ColdlightSeer,
-        SelflessHero,
-        SpawnOfNzoth,
-        ShieldedMinibot,
-        CobaltGuardian,
-        KaboomBot,
-        MecharooToken,
-        GoldarooToken,
-        BaronRivendare,
-        BronzeWarden,
-        Goldrinn,
-        KingBagurgle,
-        PackLeader, 
-        MamaBear,
-        RatPack,
-        RatToken,
-        RatGoldToken,
-        HarvestToken,
-        HarvestGolem,
-        IronhideDirehorn,
-        IronhideToken,
-        HeraldOfFlame,
-        Maexxna,
-        KangorsApprentice,
-        IronSensei,
-        RedWhelp,
-        FiendishServant,
-        KindlyGrandmother,
-        Imprisoner,
-        UnstableGhoul,
-        InfestedWolf,
-        TheBeast,
-        PilotedShredder,
-        ReplicatingMenace,
-        MechanoEgg,
-        SavannahHighmane,
-        Voidlord,
-        SneedsOldShredder,
-        NadinaTheRed,
-        GhastCoiler,
-        GlyphGuardian,
-        CaveHydra,
-        MicroMachine,
-        MurlocTidehunter,
-        RockpoolHunter,
-        DragonspawnLieutenant,
-        ScavengingHyena,
-        Khadgar,
-        WaxriderTogwaggle,
-        ShifterZerus,
-        BolvarFireblood,
-        BrannBronzebeard,
-        Murozond,
-        MalGanis,
-        Razorgore,
-        FoeReaper,
-        Kalecgos,
-        ZappSlywick,
-        MurlocTidecaller,
-        WrathWeaver,
-        MetaltoothLeaper,
-        MurlocWarleader,
-        NathrezimOverseer,
-        PogoHopper,
-        StewardOfTime,
-        Zoobot,
-        ImpToken,
-        GMToken,
-        CrowdFavorite,
-        CrystalWeaver,
-        Deflectobot,
-        FelfinNavigator,
-        HangryDragon,
-        Houndmaster,
-        ImpGangBoss,
-        ScrewjankClunker,
-        SoulJuggler,
-        TwilightEmissary,
-        Annoyomodule,
-        CobaltScalebane,
-        DefenderofArgus,
-        DrakonidEnforcer,
-        FloatingWatcher,
-        MenagerieMagician,
-        SecurityRover,
-        Siegebreaker,
-        VirmenSensei,
-        Toxfin,
-        AnnihilanBattlemaster,
-        Junkbot,
-        LightfangEnforcer,
-        PrimalfinLookout,
-        StrongshellScavenger,
-        GentleMegasaur,
-        HolyMackerel,
-        ImpMama,
-        EggToken,
-        TheBeastToken,
-        Voidwalker,
-        Hyena,
-        Microbot,
-        Spider,
+        public const string RighteousProtector = "Righteous Protector",
+        DireWolfAlpha = "Dire Wolf Alpha",
+        VulgarHomunculus = "Vulgar Homunculus",
+        Mecharoo = "Mecharoo",
+        Alleycat = "Alleycat",
+        OldMurkeye = "Old Murk-Eye",
+        Amalgam = "Amalgam",
+        ColdlightSeer = "Coldlight Seer",
+        SelflessHero = "Selfless Hero",
+        SpawnOfNzoth = "Spawn of N'Zoth",
+        ShieldedMinibot = "Shielded Minibot",
+        KaboomBot = "Kaboom Bot",
+        MecharooToken = "Jo-E Bot",
+        BaronRivendare = "Baron Rivendare",
+        BronzeWarden = "Bronze Warden",
+        Goldrinn = "Goldrinn, the Great Wolf",
+        KingBagurgle = "King Bagurgle",
+        PackLeader = "Pack Leader",
+        MamaBear = "Mama Bear",
+        RatPack = "Rat Pack",
+        RatToken = "Rat",
+        HarvestToken = "Damaged Golem",
+        HarvestGolem = "Harvest Golem",
+        IronhideDirehorn = "Ironhide Direhorn",
+        IronhideToken = "Ironhide Runt",
+        HeraldOfFlame = "Herald of Flame",
+        Maexxna = "Maexxna",
+        KangorsApprentice = "Kangor's Apprentice",
+        IronSensei = "Iron Sensei",
+        RedWhelp = "Red Whelp",
+        FiendishServant = "Fiendish Servant",
+        KindlyGrandmother = "Kindly Grandmother",
+        Imprisoner = "Imprisoner",
+        UnstableGhoul = "Unstable Ghoul",
+        InfestedWolf = "Infested Wolf",
+        TheBeast = "The Beast",
+        PilotedShredder = "Piloted Shredder",
+        ReplicatingMenace = "Replicating Menace",
+        MechanoEgg = "Mechano Egg",
+        MurlocScout = "Murloc Scout",
+        Tabbycat = "Tabbycat",
+        SavannahHighmane = "Savannah Highmane",
+        Voidlord = "Voidlord",
+        SneedsOldShredder = "Sneed's Old Shredder",
+        NadinaTheRed = "Nadina the Red",
+        GhastCoiler = "Ghastcoiler",
+        GlyphGuardian = "Glyph Guardian",
+        CaveHydra = "Cave Hydra",
+        MicroMachine = "Micro Machine",
+        MurlocTidehunter = "Murloc Tidehunter",
+        RockpoolHunter = "Rockpool Hunter",
+        DragonspawnLieutenant = "Dragonspawn Lieutenant",
+        ScavengingHyena = "Scavenging Hyena",
+        Khadgar = "Khadgar",
+        WaxriderTogwaggle = "Waxrider Togwaggle",
+        ShifterZerus = "Shifter Zerus",
+        BolvarFireblood = "Bolvar, Fireblood",
+        BrannBronzebeard = "Brann Bronzebeard",
+        Murozond = "Murozond",
+        MalGanis = "Mal'Ganis",
+        Razorgore = "Razorgore, the Untamed",
+        FoeReaper = "Foe Reaper 4000",
+        Kalecgos = "Kalecgos",
+        ZappSlywick = "Zapp Slywick",
+        MurlocTidecaller = "Murloc Tidecaller",
+        WrathWeaver = "Wrath Weaver",
+        MetaltoothLeaper = "Metaltooth Leaper",
+        MurlocWarleader = "Murloc Warleader",
+        NathrezimOverseer = "Nathrezim Overseer",
+        PogoHopper = "Pogo-Hopper",
+        StewardOfTime = "Steward of Time",
+        Zoobot = "Zoobot",
+        ImpToken = "Imp",
+        GMToken = "Big Bad Wolf",
+        CrowdFavorite = "Crowd Favorite",
+        CrystalWeaver = "Crystalweaver",
+        Deflectobot = "Deflect-o-Bot",
+        FelfinNavigator = "Felfin Navigator",
+        HangryDragon = "Hangry Dragon",
+        Houndmaster = "Houndmaster",
+        ImpGangBoss = "Imp Gang Boss",
+        ScrewjankClunker = "Screwjank Clunker",
+        SoulJuggler = "Soul Juggler",
+        TwilightEmissary = "Twilight Emissary",
+        Annoyomodule = "Annoy-o-Module",
+        CobaltScalebane = "Cobalt Scalebane",
+        DefenderofArgus = "Defender of Argus",
+        DrakonidEnforcer = "Drakonid Enforcer",
+        FloatingWatcher = "Floating Watcher",
+        MenagerieMagician = "Menagerie Magician",
+        SecurityRover = "Security Rover",
+        Siegebreaker = "Siegebreaker",
+        VirmenSensei = "Virmen Sensei",
+        Toxfin = "Toxfin",
+        AnnihilanBattlemaster = "Annihilan Battlemaster",
+        Junkbot = "Junkbot",
+        LightfangEnforcer = "Lightfang Enforcer",
+        PrimalfinLookout = "Primalfin Lookout",
+        StrongshellScavenger = "Strongshell Scavenger",
+        GentleMegasaur = "Gentle Megasaur",
+        HolyMackerel = "Holy Mackerel",
+        ImpMama = "Imp Mama",
+        EggToken = "Robosaur",
+        TheBeastToken = "btoken",
+        Voidwalker = "Voidwalker",
+        Hyena = "Hyena",
+        Microbot = "Microbot",
+        Spider = "Spider",
+        RoverToken = "Guard Bot";
 
 
 
     }
-    public static Card createFromName(Cards name)
+    public static Card createFromName(string name)
     {
         switch (name)
         {
@@ -145,8 +146,8 @@ public class CardCreatorFactory
                 return new Card(0, "Spawn of N'Zoth", 2, 2, new List<Effect> { new DeathBuff(1) }, false, false, false, Card.Type.None,2, name);
             case Cards.KaboomBot:
                 return new Card(0, "Kaboom Bot", 2, 2, new List<Effect> { new DeathRattleBomb(1) }, false, false, false, Card.Type.Mech,2, name);
-            case Cards.CobaltGuardian:
-                return new Card(0, "Cobalt Guardian", 6, 3, new List<Effect> { new RegainDivine() }, false, false, false, Card.Type.Mech,3, name);
+            case Cards.Deflectobot:
+                return new Card(0, "Deflect-o-Bot", 3, 2, new List<Effect> { new RegainDivine(1) }, false, true, false, Card.Type.Mech,3, name);
             case Cards.MecharooToken:
                 return new Card(0, "Mecharoo-token", 1, 1, null, false, false, false, Card.Type.Mech,1, name);
             case Cards.BaronRivendare:
@@ -159,6 +160,10 @@ public class CardCreatorFactory
                 return new Card(0, "King Bagurgle", 6, 3, new List<Effect> { new DeathTypeBuff(2, Card.Type.Murloc) }, false, false, false, Card.Type.Murloc,5, name);
             case Cards.PackLeader:
                 return new Card(0, "Pack Leader", 3, 3, new List<Effect> { new SpawnBuffEffect( Card.Type.Beast,3,0) }, false, false, false, Card.Type.None,3, name);
+            case Cards.MurlocScout:
+                return new Card(0, "Murloc Scout", 1, 1, null, false, false, false, Card.Type.Murloc, 1, name);
+            case Cards.Tabbycat:
+                return new Card(0, "Tabbyact", 1, 1, null, false, false, false, Card.Type.Beast, 1, name);
             case Cards.MamaBear:
                 return new Card(0, "Mama Bear", 5, 5, new List<Effect> { new SpawnBuffEffect(Card.Type.Beast, 5, 5) }, false, false, false, Card.Type.Beast,6, name);
             case Cards.RatPack:
@@ -251,6 +256,8 @@ public class CardCreatorFactory
                 return new Card(0, "Mechano Egg", 0, 5, new List<Effect> { new DeathRattleSummon(Cards.EggToken,1) }, false, false, false, Card.Type.Mech, 4, name);
             case Cards.EggToken:
                 return new Card(0, "Egg-Token", 8, 8, null, false, false, false, Card.Type.Mech, 1, name);
+            case Cards.Amalgam:
+                return new Card(0, "Amalgam", 1, 1, null, false, false, false, Card.Type.All, 1, name);
             case Cards.MenagerieMagician:
                 return new Card(0, "Menagerie Magician", 4, 4, null, false, false, false, Card.Type.None, 4, name);
             case Cards.Toxfin:
@@ -303,12 +310,28 @@ public class CardCreatorFactory
                 return new Card(0, "Scavenging Hyena", 2, 2, new List<Effect> { new BuffFromDeath(2, 1, Card.Type.Beast) }, false, false, false, Card.Type.Beast, 2, name);
             case Cards.UnstableGhoul:
                 return new Card(0, "Unstable Ghoul", 1, 3, new List<Effect> { new DeathAoE(1) }, false, false, true, Card.Type.None, 2, name);
+            case Cards.MurlocWarleader:
+                return new Card(0, "Murloc Warleader", 3, 3, new List<Effect> { new FriendlyDmbBonus(Card.Type.Murloc,2) }, false, false, false, Card.Type.Murloc, 2, name);
+            case Cards.Siegebreaker:
+                return new Card(0, "Siegebreaker", 5, 8, new List<Effect> { new FriendlyDmbBonus(Card.Type.Demon, 1) }, false, false, true, Card.Type.Demon, 4, name);
+            case Cards.ImpGangBoss:
+                return new Card(0, "Imp Gang Boss", 2, 4, new List<Effect> { new SummonOnDmgTaken(Cards.ImpToken) }, false, false, false, Card.Type.Demon, 3, name);
+            case Cards.SecurityRover:
+                return new Card(0, "Security Rover", 2, 6, new List<Effect> { new SummonOnDmgTaken(Cards.RoverToken) }, false, false, false, Card.Type.Mech, 4, name);
+            case Cards.RoverToken:
+                return new Card(0, "Rover-Token", 2, 3, null, false, false, true, Card.Type.Mech, 1, name);
+            case Cards.BolvarFireblood:
+                return new Card(0, "Bolvar, Fireblood", 1, 7, new List<Effect> { new BuffFromDivine(2,0) }, false, true, false, Card.Type.None, 4, name);
+            case Cards.DrakonidEnforcer:
+                return new Card(0, "Drakonid Enforcer", 3, 6, new List<Effect> { new BuffFromDivine(2, 2) }, false, false, false, Card.Type.Dragon, 4, name);
+            case Cards.SoulJuggler:
+                return new Card(0, "Soul Juggler", 3, 3, new List<Effect> { new Juggler(1,Card.Type.Demon) }, false, false, false, Card.Type.None, 3, name);
             default:
-                throw new UnknownCardException("Uknown card: " + name);
+                return new Card(0, "UknownCard",0,0,null,false,false,false,Card.Type.None,1,"UknownCard");
 
         }
     }
-    public static Card createGoldenFromName(Cards name)
+    public static Card createGoldenFromName(string name)
     {
         return createFromName(name).makeGolden();
     }

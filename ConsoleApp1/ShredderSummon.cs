@@ -16,7 +16,7 @@ using System.Threading.Tasks;
     {
         board.printDebugMessage("Performing action: random shredder summon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         for (int i = 0; i < times; i++)
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),1);
     }
     public Card getRandomCard()
     {
@@ -42,7 +42,7 @@ using System.Threading.Tasks;
             return false;
         return true;
     }
-    CardCreatorFactory.Cards[] pool = {CardCreatorFactory.Cards.DireWolfAlpha, CardCreatorFactory.Cards.VulgarHomunculus, CardCreatorFactory.Cards.MicroMachine, CardCreatorFactory.Cards.MurlocTidehunter
+    string[] pool = {CardCreatorFactory.Cards.DireWolfAlpha, CardCreatorFactory.Cards.VulgarHomunculus, CardCreatorFactory.Cards.MicroMachine, CardCreatorFactory.Cards.MurlocTidehunter
     , CardCreatorFactory.Cards.RockpoolHunter,CardCreatorFactory.Cards.DragonspawnLieutenant,CardCreatorFactory.Cards.KindlyGrandmother,CardCreatorFactory.Cards.ScavengingHyena,CardCreatorFactory.Cards.UnstableGhoul
     ,CardCreatorFactory.Cards.Khadgar};
 

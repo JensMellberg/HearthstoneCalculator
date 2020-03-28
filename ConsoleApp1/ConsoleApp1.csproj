@@ -43,9 +43,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
+    <Compile Include="BoardStateReader.cs" />
+    <Compile Include="Juggler.cs" />
+    <Compile Include="BuffFromDivine.cs" />
+    <Compile Include="DivineShieldLossAction.cs" />
+    <Compile Include="DamageTakenAction.cs" />
+    <Compile Include="CardLookingForAtkBonusAction.cs" />
     <Compile Include="Cleave.cs" />
     <Compile Include="BuffFromDeath.cs" />
     <Compile Include="DeathAoE.cs" />
+    <Compile Include="SummonOnDmgTakenGolden.cs" />
+    <Compile Include="SummonOnDmgTaken.cs" />
     <Compile Include="DragonDivine.cs" />
     <Compile Include="Fiendish.cs" />
     <Compile Include="DoubleDamageAtk.cs" />
@@ -53,6 +61,7 @@
     <Compile Include="ShredderSummon.cs" />
     <Compile Include="GhastCoilerSummon.cs" />
     <Compile Include="SoTDragonFire.cs" />
+    <Compile Include="FriendlyDmgBonus.cs" />
     <Compile Include="StartofCombatAction.cs" />
     <Compile Include="KangorSummon.cs" />
     <Compile Include="OverKillDamage.cs" />

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
     {
         board.printDebugMessage("Performing action: random dr summon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         for (int i = 0; i < times; i++)
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i);
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,1);
     }
     public Card getRandomCard()
     {
@@ -42,7 +42,7 @@ using System.Threading.Tasks;
             return false;
         return true;
     }
-    CardCreatorFactory.Cards[] pool = {CardCreatorFactory.Cards.Goldrinn, CardCreatorFactory.Cards.FiendishServant, CardCreatorFactory.Cards.Imprisoner, CardCreatorFactory.Cards.KindlyGrandmother
+    string[] pool = {CardCreatorFactory.Cards.Goldrinn, CardCreatorFactory.Cards.FiendishServant, CardCreatorFactory.Cards.Imprisoner, CardCreatorFactory.Cards.KindlyGrandmother
     , CardCreatorFactory.Cards.UnstableGhoul,CardCreatorFactory.Cards.InfestedWolf,CardCreatorFactory.Cards.TheBeast,CardCreatorFactory.Cards.PilotedShredder,CardCreatorFactory.Cards.NadinaTheRed
     ,CardCreatorFactory.Cards.ReplicatingMenace,CardCreatorFactory.Cards.MechanoEgg,CardCreatorFactory.Cards.SavannahHighmane, CardCreatorFactory.Cards.Voidlord,CardCreatorFactory.Cards.SneedsOldShredder
     , CardCreatorFactory.Cards.SelflessHero, CardCreatorFactory.Cards.Mecharoo, CardCreatorFactory.Cards.SpawnOfNzoth, CardCreatorFactory.Cards.RatPack, CardCreatorFactory.Cards.HarvestToken

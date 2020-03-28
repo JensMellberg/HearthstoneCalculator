@@ -12,12 +12,13 @@ public class Card
     public int ID;
     public bool justCreated;
     Type type;
-    public CardCreatorFactory.Cards cardID;
+    public string cardID;
     public int attackPriority;
     public const int MAX_PRIORITY = 1000;
     public int tavernTier;
     bool poisonous;
     public bool golden = false;
+    public int BoardPosition = 0;
     public enum Type
     {
         All,
@@ -29,7 +30,7 @@ public class Card
         None
     };
 
-    public Card(int ID, string name, int attack, int hp, List<Effect> effects, bool poisonous, bool divineShield, bool taunt, Type type,int tier, CardCreatorFactory.Cards cardID)
+    public Card(int ID, string name, int attack, int hp, List<Effect> effects, bool poisonous, bool divineShield, bool taunt, Type type,int tier, string cardID)
 	{
         this.ID = ID == 0 ? ID = HearthstoneBoard.getRandomNumber(1, 9999) : ID;
         this.cardID = cardID;
@@ -68,6 +69,9 @@ public class Card
     {
         foreach (Card c in board.getAdjacents(this))
             c.performAdjacantEffects(this, board);
+        foreach (Card c in board.getBoardFromMinion(this))
+            if (c != this)
+                c.performedAction(new CardLookingForAtkBonusAction(this),board);
         performedAction(new GetDamageAction(), board);
         int result = attack + tempAttackBonus;
         board.printDebugMessage("damagebonus: " + tempAttackBonus+ "on "+getReadableName(), HearthstoneBoard.OutputPriority.COMMUNICATION);
@@ -122,7 +126,8 @@ public class Card
     {
         if (poisonous)
             damage = 999999;
-        if (target.dealDamage(damage, board))
+        int res = target.dealDamage(damage, board);
+        if (res == 2)
             performedAction(new OverKillAction(), board);
     }
 
@@ -133,6 +138,12 @@ public class Card
             this.performedAction(new DeadAction(), board);
             board.killOf(this);
         }
+    }
+
+    public Card setId(int id)
+    {
+        this.ID = id;
+        return this;
     }
 
     public bool isAlive()
@@ -244,33 +255,44 @@ public class Card
 
     public Card makeGolden()
     {
-        golden = true;
         hp *= 2;
         attack *= 2;
+        return makeGoldenEffects();
+
+    }
+
+    public Card makeGoldenEffects()
+    {
+        golden = true;
         for (int i = 0; i < effects.Count; i++)
             effects[i] = effects[i].makeGolden();
         return this;
 
     }
 
-
-    public bool dealDamage(int damage, HearthstoneBoard board)
+    //0 = not dead, 1 = dead, 2 = overkill
+    public int dealDamage(int damage, HearthstoneBoard board)
     {
         if (divineShield)
         {
+            foreach (Card c in board.getBoardFromMinion(this))
+                c.performedAction(new DivineShieldLossAction(this), board);
             divineShield = false;
             board.printDebugMessage("Damage taken: 0 (divine shield pop) on " + getReadableName(), HearthstoneBoard.OutputPriority.DAMAGES);
-            return false;
+            return 0;
         }
         hp = hp - damage;
         board.printDebugMessage("Damage taken: " + damage + " on " + getReadableName(),HearthstoneBoard.OutputPriority.DAMAGES);
+        performedAction(new DamageTakenAction(),board);
         if (hp <= 0)
         {
             board.addToPendingDeath(this);
             if (hp < 0)
-            return true;
+                return 2;
+            else
+                return 1;
         }
-        return false;
+        return 0;
     }
 
     public void printState()

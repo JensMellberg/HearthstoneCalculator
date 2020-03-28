@@ -16,7 +16,7 @@ using System.Threading.Tasks;
     {
         board.printDebugMessage("Performing action: random sneeds summon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         for (int i = 0; i < times; i++)
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),1);
     }
     public Card getRandomCard()
     {
@@ -42,7 +42,7 @@ using System.Threading.Tasks;
             return false;
         return true;
     }
-    CardCreatorFactory.Cards[] pool = {CardCreatorFactory.Cards.OldMurkeye, CardCreatorFactory.Cards.WaxriderTogwaggle, CardCreatorFactory.Cards.Khadgar, CardCreatorFactory.Cards.ShifterZerus
+    string[] pool = {CardCreatorFactory.Cards.OldMurkeye, CardCreatorFactory.Cards.WaxriderTogwaggle, CardCreatorFactory.Cards.Khadgar, CardCreatorFactory.Cards.ShifterZerus
     , CardCreatorFactory.Cards.TheBeast,CardCreatorFactory.Cards.BolvarFireblood,CardCreatorFactory.Cards.BaronRivendare,CardCreatorFactory.Cards.BrannBronzebeard,CardCreatorFactory.Cards.Goldrinn
     ,CardCreatorFactory.Cards.KingBagurgle,CardCreatorFactory.Cards.Murozond,CardCreatorFactory.Cards.MalGanis,CardCreatorFactory.Cards.Razorgore,CardCreatorFactory.Cards.FoeReaper,
     CardCreatorFactory.Cards.Kalecgos,CardCreatorFactory.Cards.Maexxna,CardCreatorFactory.Cards.NadinaTheRed,CardCreatorFactory.Cards.ZappSlywick};

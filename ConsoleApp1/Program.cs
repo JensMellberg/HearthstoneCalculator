@@ -10,7 +10,9 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-           // TurnByTurnChecker.runTests();
+           BoardStateReader.Run();
+           
+            TurnByTurnChecker.runTests();
             TestRunner.runTests();
             StatisticsChecker.runTests();
         }

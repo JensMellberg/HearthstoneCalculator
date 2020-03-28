@@ -36,11 +36,13 @@ namespace ConsoleApp1
 
         public static void printReadableResult(List<DmgDistEntry> dmgdist)
         {
+            Console.WriteLine("Damage distributions: ");
             foreach (DmgDistEntry d in dmgdist)
             {
-                Console.WriteLine("Damage distributions: ");
                 Console.WriteLine(d.damage + ": " + d.percentage + "%");
             }
+            Console.WriteLine("---------");
+            Console.WriteLine();
         } 
 
 

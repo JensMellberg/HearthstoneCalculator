@@ -66,6 +66,14 @@ using System.Threading.Tasks;
         return this[HearthstoneBoard.getRandomNumber(0, Count)];
     }
 
+    public bool hasAvailableAttackers(HearthstoneBoard board)
+    {
+        foreach (Card c in this)
+            if (c.getAttack(board) > 0)
+                return true;
+        return false;
+    }
+
     public bool Compare(BoardSide other, HearthstoneBoard board, HearthstoneBoard otherBoard)
     {
         if (Count != other.Count)
@@ -106,10 +114,10 @@ using System.Threading.Tasks;
 
     public struct DeadCard
     {
-        CardCreatorFactory.Cards card;
+        string card;
         bool gold;
         public Card.Type type;
-        public DeadCard(CardCreatorFactory.Cards card, bool gold, Card.Type type)
+        public DeadCard(string card, bool gold, Card.Type type)
         {
             this.type = type;
             this.card = card;

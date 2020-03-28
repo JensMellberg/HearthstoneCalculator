@@ -22,7 +22,7 @@ using System.Threading.Tasks;
         {
             if (Card.typesMatches(current.graveyard[i].type, Card.Type.Mech))
             {
-                board.addNewMinionToBoard(board.getPlayerFromMinion(user), current.graveyard[i].revive().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+counterBcLazy);
+                board.addNewMinionToBoard(board.getPlayerFromMinion(user), current.graveyard[i].revive().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+counterBcLazy,1);
                 counterBcLazy++;
                 currentCount--;
             }

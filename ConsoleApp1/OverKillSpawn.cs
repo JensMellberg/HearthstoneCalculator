@@ -7,15 +7,15 @@ using System.Threading.Tasks;
    public class OverKillSpawn : Effect
 
     {
-    CardCreatorFactory.Cards spawn;
-    public OverKillSpawn(CardCreatorFactory.Cards spawn)
+    string spawn;
+    public OverKillSpawn(string spawn)
     {
         this.spawn = spawn;
     }
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: overkillspawn: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(spawn).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user));
+        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(spawn).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),0);
     }
     public override Effect makeGolden()
     {

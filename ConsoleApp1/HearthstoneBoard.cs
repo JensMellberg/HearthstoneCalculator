@@ -29,7 +29,8 @@ public class HearthstoneBoard
     static Random rnd = new Random();
     public static int getRandomNumber(int start, int end)
     {
-        return rnd.Next(start, end);
+        int ret = rnd.Next(start, end);
+        return ret;
     }
 
     public int getPlayerFromMinion(Card c) {
@@ -40,13 +41,13 @@ public class HearthstoneBoard
         else
             throw new CardDoesNotExistException("getPlayerFromMinion failed: Card does not exist: "+c.ID);
     }
-    public void addNewMinionToBoard(BoardSide current, Card c, int position)
+    public void addNewMinionToBoard(BoardSide current, Card c, int position, int overAllow)
     {
         c.justCreated = true;
         printDebugMessage("Minion added to board " + (current == p1Board ? 1 : 2) + ": " + c.ID, OutputPriority.BOARDCHANGES);
       
         printDebugMessage("CURRENT IS NOW :" + current.Count, OutputPriority.COMMUNICATION);
-        if (current.Count == 8)
+        if (current.Count >= 7 + overAllow)
             return;
         else
         {
@@ -61,9 +62,9 @@ public class HearthstoneBoard
 
         }
     }
-    public void addNewMinionToBoard(int player, Card c, int position)
+    public void addNewMinionToBoard(int player, Card c, int position, int overAllow)
     {
-        addNewMinionToBoard(getBoardFromPlayer(player), c, position);
+        addNewMinionToBoard(getBoardFromPlayer(player), c, position, overAllow);
     }
     public BoardSide getBoardFromMinion(Card c)
     {
@@ -243,6 +244,11 @@ public class HearthstoneBoard
             printDebugMessage("Determined that it is game over, one side is empty", OutputPriority.INTENSEDEBUG);
             return false;
         }
+        else if (!p1Board.hasAvailableAttackers(this) && !p2Board.hasAvailableAttackers(this))
+        {
+            printDebugMessage("Determining that its game over. No side has any attackers", OutputPriority.INTENSEDEBUG);
+            return false;
+        }
         else
         {
             printDebugMessage("Determining that its not game over: " + p1Board.Count + " " + p2Board.Count, OutputPriority.INTENSEDEBUG);
@@ -257,12 +263,24 @@ public class HearthstoneBoard
         BoardSide current = getBoardFromPlayer(player);
         BoardSide other = player == 1 ? p2Board : p1Board;
 
+        if (!current.hasAvailableAttackers(this))
+        {
+            printDebugMessage("Player " + player + " has no minions to attack with.", OutputPriority.ATTACKERS);
+            return;
+        }
+
         Card attacker = getHighestPriorityCard(current);
         if (attacker.attackPriority == Card.MAX_PRIORITY)
         {
             setAttackPriorities(player);
             attacker = getHighestPriorityCard(current);
         }
+        while (attacker.getAttack(this) == 0)
+        {
+            attacker.attackPriority = Card.MAX_PRIORITY;
+            attacker = getHighestPriorityCard(current);
+        }
+        
 
         Card target;
         
@@ -314,6 +332,7 @@ public class HearthstoneBoard
     {
         var color = Console.ForegroundColor;
         Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine();
         Console.WriteLine("====================");
         Console.ForegroundColor = color;
         Console.WriteLine("Board 1:");
@@ -328,6 +347,7 @@ public class HearthstoneBoard
         }
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("====================");
+        Console.WriteLine();
         Console.ForegroundColor = color;
 
     }
