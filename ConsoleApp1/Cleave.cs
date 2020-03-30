@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class Cleave : Effect
+[Serializable]
+public class Cleave : Effect
 
     {
     public Cleave() : base()

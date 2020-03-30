@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class BoardSide : List<Card>
+[Serializable] 
+public class BoardSide : List<Card>
     {
     public int tavernTier;
-    public List<DeadCard> graveyard = new List<DeadCard>();
+    [NonSerialized]
+    public List<DeadCard> graveyard;
 
     public BoardSide(List<DeadCard> graveyard, int tier)
     {
@@ -17,15 +19,18 @@ using System.Threading.Tasks;
         public BoardSide(int tier)
     {
         tavernTier = tier;
+        graveyard = new List<DeadCard>();
     }
 
     public BoardSide()
     {
+        graveyard = new List<DeadCard>();
     }
 
     public BoardSide copy()
     {
         List<DeadCard> newGy = new List<DeadCard>();
+        if (graveyard != null)
         foreach (DeadCard e in graveyard)
             newGy.Add(e);
         BoardSide result = new BoardSide(newGy,tavernTier);
@@ -45,7 +50,7 @@ using System.Threading.Tasks;
         return res;
     }
 
-    public Card getRandomCardAlive()
+    public Card getRandomCardAlive(HearthstoneBoard board)
     {
         bool flag = false;
         foreach (Card d in this)
@@ -56,14 +61,14 @@ using System.Threading.Tasks;
             }
         if (!flag)
             return null;
-        Card c = getRandomCard();
+        Card c = getRandomCard(board);
         while (!c.isAlive())
-            c = getRandomCard();
+            c = getRandomCard(board);
         return c;
     }
-    public Card getRandomCard()
+    public Card getRandomCard(HearthstoneBoard board)
     {
-        return this[HearthstoneBoard.getRandomNumber(0, Count)];
+        return this[board.getRandomNumber(0, Count)];
     }
 
     public bool hasAvailableAttackers(HearthstoneBoard board)
@@ -85,6 +90,19 @@ using System.Threading.Tasks;
         }
 
         return true;
+    }
+
+    public List<Card> getLowestAtks(HearthstoneBoard board)
+    {
+        List<Card> ret = new List<Card>();
+        Card lowest = this[0];
+        foreach (Card d in this)
+            if (d.getAttack(board) < lowest.getAttack(board))
+                lowest = d;
+        foreach (Card d in this)
+            if (d.getAttack(board) == lowest.getAttack(board))
+                ret.Add(d);
+        return ret;
     }
 
     public bool doStartOfTurnEffect(HearthstoneBoard board)

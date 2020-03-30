@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class OverKillDamage : Effect
+[Serializable]
+public class OverKillDamage : Effect
 
     {
     int dmg;

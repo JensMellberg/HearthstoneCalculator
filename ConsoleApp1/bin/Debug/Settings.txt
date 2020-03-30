@@ -1,0 +1,2 @@
+Path=D:\Program1\Program\Hearthstone\Logs\
+Simulations=10

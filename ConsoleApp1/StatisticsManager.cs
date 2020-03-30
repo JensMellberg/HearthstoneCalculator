@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,55 @@ namespace ConsoleApp1
             int[] wins = { 0, 0, 0 };
             foreach (HearthstoneBoard b in boards)
                 wins[b.getWinner()]++;
-            return new double[] { wins[0] / boards.Count, wins[1] / boards.Count, wins[2] / boards.Count };
+            return new double[] { (double)wins[0] / boards.Count, (double)wins[1] / boards.Count, (double)wins[2] / boards.Count };
+        }
+        public static string[] labels = { "Draw", "Win", "Loss" };
+        public static ConsoleColor[] colors = { ConsoleColor.Gray, ConsoleColor.Green,ConsoleColor.Red };
+        public static Color[] textcolors = { Color.Gray, Color.Green, Color.Red };
+        public static void printExpectedResult(double[] avrg)
+        {
+            int res = expectedResult(avrg);
+            ConsoleColor def = Console.ForegroundColor;
+            Console.ForegroundColor = colors[res];
+            Console.WriteLine("Expected result: " + labels[res]);
+            Console.ForegroundColor = def;
+        }
+        public static Expected expectedResultAndColor(double[] avrg)
+        {
+            int res = expectedResult(avrg);
+            return new Expected(labels[res], textcolors[res]);
+        }
+
+        public static HearthstoneBoard[] findWorstAndBest(List<HearthstoneBoard> boards)
+        {
+
+            HearthstoneBoard best = boards[0];
+            HearthstoneBoard worst = boards[0];
+            foreach (HearthstoneBoard b in boards)
+            {
+                if (b.getFinalizedDamage() > best.getFinalizedDamage())
+                    best = b;
+                if (b.getFinalizedDamage() < worst.getFinalizedDamage())
+                    worst = b;
+            }
+            return new HearthstoneBoard[] { best, worst };
+        }
+
+        public static int expectedResult(double[] avrg)
+        {
+            double highest = avrg[0];
+            int pos = 0;
+            if (avrg[1] > highest)
+            {
+                pos = 1;
+                highest = avrg[1];
+            }
+            if (avrg[2] > highest)
+            {
+                pos = 2;
+                highest = avrg[2];
+            }
+            return pos;
         }
 
         public static List<DmgDistEntry> calculateDmgDistributions(List<HearthstoneBoard> boards)
@@ -43,8 +92,26 @@ namespace ConsoleApp1
             }
             Console.WriteLine("---------");
             Console.WriteLine();
-        } 
+        }
 
+        public static void printReadableResult(double[] avrgs)
+        {
+            //Math.Round(avrgs[0] * 100, 1)
+            Console.WriteLine("Chance of Draw: "+ Math.Round(avrgs[0] * 100, 1) + "%");
+            Console.WriteLine("Chance of Win: " + Math.Round(avrgs[1] * 100, 1) + "%");
+            Console.WriteLine("Chance of Loss: " + Math.Round(avrgs[2] * 100, 1) + "%");
+            Console.WriteLine();
+        }
+        public static int mostLikelyOutcome(List<DmgDistEntry> dmgdist)
+        {
+            DmgDistEntry likely = new DmgDistEntry(1, 0);
+            foreach (DmgDistEntry d in dmgdist)
+            {
+                if (d.percentage > likely.percentage)
+                    likely = d;
+            }
+            return likely.damage;
+        }
 
 
         public struct DmgDistEntry
@@ -56,6 +123,17 @@ namespace ConsoleApp1
             }
           public  int damage;
             public double percentage;
+        }
+
+        public struct Expected
+        {
+            public Expected(string result, Color color)
+            {
+                this.result = result;
+                this.color = color;
+            }
+            public string result;
+            public Color color;
         }
     }
 }

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathRattleSummonGolden : Effect
+[Serializable]
+public class DeathRattleSummonGolden : Effect
 
     {
     string summon;

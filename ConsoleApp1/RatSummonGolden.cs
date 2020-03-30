@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class RatSummonGolden : Effect
+[Serializable]
+public class RatSummonGolden : Effect
 
     {
     string summon;

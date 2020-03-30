@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class Juggler : Effect
+[Serializable]
+public class Juggler : Effect
 
     {
     int times;
@@ -23,7 +24,7 @@ using System.Threading.Tasks;
         {
             if (opponentBoard.Count == 0)
                 return;
-            Card target = opponentBoard.getRandomCardAlive();
+            Card target = opponentBoard.getRandomCardAlive(board);
             if (target == null)
                 return;
             user.causeDamageToTarget(target, board, 3);

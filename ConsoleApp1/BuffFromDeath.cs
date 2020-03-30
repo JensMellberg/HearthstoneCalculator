@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class BuffFromDeath : Effect
+[Serializable]
+public class BuffFromDeath : Effect
 
     {
     int dmg;

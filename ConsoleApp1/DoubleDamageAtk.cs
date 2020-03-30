@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DoubleDmanageAtk : Effect
+[Serializable]
+public class DoubleDmanageAtk : Effect
 
     {
     int multiplier;

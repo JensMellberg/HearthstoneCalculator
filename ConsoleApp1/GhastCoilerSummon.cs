@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class GhastCoilerSummon : Effect
+[Serializable]
+public class GhastCoilerSummon : Effect
 
     {
     int times;
@@ -16,11 +17,11 @@ using System.Threading.Tasks;
     {
         board.printDebugMessage("Performing action: random dr summon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         for (int i = 0; i < times; i++)
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard().setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,1);
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard(board).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,1);
     }
-    public Card getRandomCard()
+    public Card getRandomCard(HearthstoneBoard board)
     {
-        return CardCreatorFactory.createFromName(pool[HearthstoneBoard.getRandomNumber(0, pool.Length)]);
+        return CardCreatorFactory.createFromName(pool[board.getRandomNumber(0, pool.Length)]);
     }
 
     public override Effect makeGolden()

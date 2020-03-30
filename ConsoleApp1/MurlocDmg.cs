@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class MurlocDmg : Effect
+[Serializable]
+public class MurlocDmg : Effect
 
 
     {
@@ -39,6 +40,21 @@ using System.Threading.Tasks;
         if (a is GetDamageAction)
             return true;
         return false;
+    }
+
+    public override void makeUpForReaderError(Card user, HearthstoneBoard board)
+    {
+        user.addAttack(bonus);
+        foreach (Card c in board.p1Board)
+        {
+            if (c.typeMatches(Card.Type.Murloc))
+                user.addAttack(-bonus);
+        }
+        foreach (Card c in board.p2Board)
+        {
+            if (c.typeMatches(Card.Type.Murloc))
+                user.addAttack(-bonus);
+        }
     }
 
     public override bool Compare(Effect other)

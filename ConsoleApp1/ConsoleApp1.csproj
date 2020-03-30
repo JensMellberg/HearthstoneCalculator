@@ -7,10 +7,25 @@
     <ProjectGuid>{B37D0484-529E-4940-943B-C58DC7483164}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ConsoleApp1</RootNamespace>
-    <AssemblyName>ConsoleApp1</AssemblyName>
+    <AssemblyName>BattlegroundSimulator</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,9 +46,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ConsoleApp1.BoardEditor</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,7 +67,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
+    <Compile Include="BoardEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BoardEditor.Designer.cs">
+      <DependentUpon>BoardEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BoardGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BoardGUI.Designer.cs">
+      <DependentUpon>BoardGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="BoardStateReader.cs" />
+    <Compile Include="ArtificalSummon.cs" />
+    <Compile Include="DrawableCard.cs" />
+    <Compile Include="DrawableHearthstoneBoard.cs" />
+    <Compile Include="GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI.Designer.cs">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KhadgarEffect.cs" />
+    <Compile Include="DivineRefresh.cs" />
+    <Compile Include="BuffFromKill.cs" />
+    <Compile Include="MalGanisDeath.cs" />
+    <Compile Include="MalGanisSoT.cs" />
+    <Compile Include="OpponentSummon.cs" />
+    <Compile Include="GotKillAction.cs" />
     <Compile Include="Juggler.cs" />
     <Compile Include="BuffFromDivine.cs" />
     <Compile Include="DivineShieldLossAction.cs" />
@@ -52,6 +104,19 @@
     <Compile Include="Cleave.cs" />
     <Compile Include="BuffFromDeath.cs" />
     <Compile Include="DeathAoE.cs" />
+    <Compile Include="FinilizedSoTAction.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SummonImpMama.cs" />
     <Compile Include="SummonOnDmgTakenGolden.cs" />
     <Compile Include="SummonOnDmgTaken.cs" />
     <Compile Include="DragonDivine.cs" />
@@ -102,9 +167,70 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CardDoesNotExistException.cs" />
     <Compile Include="UnknownCardException.cs" />
+    <Compile Include="VisualBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VisualBoard.Designer.cs">
+      <DependentUpon>VisualBoard.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BoardEditor.resx">
+      <DependentUpon>BoardEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BoardGUI.resx">
+      <DependentUpon>BoardGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI.resx">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VisualBoard.resx">
+      <DependentUpon>VisualBoard.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Attacker.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Attacker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Defender.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Defender1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Attacker1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+    <None Include="Resources\Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

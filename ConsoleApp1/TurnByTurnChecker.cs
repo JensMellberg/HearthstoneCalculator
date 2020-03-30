@@ -10,7 +10,7 @@ namespace ConsoleApp1
     {
         public static void runTests()
         {
-            performTest(testCase1);
+            performTest(Ghastcoiler);
             
 
             Console.ReadLine();
@@ -44,7 +44,7 @@ namespace ConsoleApp1
                 b.printState();
                 Console.ReadLine();
                 var res = b.turnByTurnSimulation();
-
+               
                 Console.Clear();
                 res.printState();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -52,8 +52,13 @@ namespace ConsoleApp1
                 Console.ForegroundColor = defaults;
                 Console.ReadLine();
 
-
-
+                b.stockedRandomValues = res.recievedRandomValues;
+                foreach (int i in res.recievedRandomValues)
+                    Console.WriteLine(i);
+                Console.ReadLine();
+                var res2 = b.turnByTurnSimulation();
+                Console.WriteLine("Test finished!");
+                Console.ReadLine();
 
 
             }

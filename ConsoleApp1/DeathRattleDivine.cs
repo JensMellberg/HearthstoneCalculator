@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathRattleDivine : Effect
+[Serializable]
+public class DeathRattleDivine : Effect
 
     {
     int times;
@@ -20,15 +21,17 @@ using System.Threading.Tasks;
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: deathrattledivine: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        bool stop = true;
+
         BoardSide userBoard = board.getBoardFromMinion(user);
 
         for (int i = 0; i < times; i++)
         {
+            bool stop = true;
             foreach (Card c in userBoard)
             {
                 if (c != user && !c.divineShield)
                 {
+                    board.printDebugMessage("Found minion without divine shield " + c.getReadableName(), HearthstoneBoard.OutputPriority.INTENSEDEBUG);
                     stop = false;
                 }
             }
@@ -36,12 +39,12 @@ using System.Threading.Tasks;
                 return;
             while (true)
             {
-                int target = HearthstoneBoard.getRandomNumber(0, userBoard.Count);
+                int target = board.getRandomNumber(0, userBoard.Count);
                 if (!userBoard[target].divineShield && userBoard[target] != user)
                 {
                     board.printDebugMessage("Giving divine shield to " + userBoard[target].getReadableName(), HearthstoneBoard.OutputPriority.INTENSEDEBUG);
                     userBoard[target].setDivineShield(true);
-                    break; ;
+                    break; 
                 }
             }
         }

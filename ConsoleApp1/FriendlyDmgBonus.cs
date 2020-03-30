@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class FriendlyDmbBonus : Effect
+[Serializable]
+public class FriendlyDmbBonus : Effect
 
     {
     Card.Type type;
@@ -24,6 +25,13 @@ using System.Threading.Tasks;
         if (a is CardLookingForAtkBonusAction)
             return ((CardLookingForAtkBonusAction)a).card().getCardType() == type;
         return false;
+    }
+
+    public override void makeUpForReaderError(Card user, HearthstoneBoard board)
+    {
+        foreach (Card c in board.getBoardFromMinion(user))
+            if (c.typeMatches(type) && c!=user)
+                c.addAttack(-dmg);
     }
 
     public override Effect makeGolden()

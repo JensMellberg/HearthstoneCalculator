@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class SoTDragonFire : Effect
+[Serializable]
+public class SoTDragonFire : Effect
 
     {
     int times;
@@ -31,7 +32,7 @@ using System.Threading.Tasks;
         {
             if (opponentBoard.Count == 0)
                 return;
-            int target = HearthstoneBoard.getRandomNumber(0, opponentBoard.Count);
+            int target = board.getRandomNumber(0, opponentBoard.Count);
             user.causeDamageToTarget(opponentBoard[target], board, counter);
         }
     }

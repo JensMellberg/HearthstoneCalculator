@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class OverKillSpawnGolden : Effect
+[Serializable]
+public class OverKillSpawnGolden : Effect
 
     {
     string spawn;

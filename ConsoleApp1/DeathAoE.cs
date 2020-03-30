@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathAoE : Effect
+[Serializable]
+public class DeathAoE : Effect
 
     {
     int dmg;

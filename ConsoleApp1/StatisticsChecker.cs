@@ -45,7 +45,6 @@ namespace ConsoleApp1
                 Console.WriteLine("#####");
                // b.printEvents = true;
                 List<HearthstoneBoard> res = b.simulateResults(10000);
-                Console.WriteLine("REDSADSAD: " + HearthstoneBoard.counts[0] + " " + HearthstoneBoard.counts[1]);
 
 
                 var dmgdist = StatisticsManager.calculateDmgDistributions(res);

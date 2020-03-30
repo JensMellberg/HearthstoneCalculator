@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathTypeBuff : Effect
+[Serializable]
+public class DeathTypeBuff : Effect
 
     {
     int buff;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
         board.printDebugMessage("Performing action: deathrattletypebuff: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         foreach (Card c in board.getBoardFromMinion(user))
         {
-           if (c.typeMatches(type))
+           if (c.typeMatches(type) && c != user)
                 c.addStats(buff, buff);
         }
     }

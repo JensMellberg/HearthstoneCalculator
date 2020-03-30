@@ -8,7 +8,8 @@ namespace ConsoleApp1
 {
     public class TestRunner
     {
-        public static HearthstoneBoard.OutputPriority outputPriority = HearthstoneBoard.OutputPriority.ATTACKERS;
+
+        public static HearthstoneBoard.OutputPriority outputPriority = HearthstoneBoard.OutputPriority.INTENSEDEBUG;
         public static void runTests()
         {
             performTest(testCase0);
@@ -37,12 +38,24 @@ namespace ConsoleApp1
             performTest(testMultipleSummon);
             performTest(testNadina);
             performTest(testJunkbot);
+            performTest(testReborn2);
             performTest(testGhoul);
             performTest(testWarleader);
             performTest(testNoAttack);
             performTest(testRover);
             performTest(testBolvar);
             performTest(testJuggler);
+            performTest(testWaxrider);
+            performTest(testTheBeast);
+            performTest(testMalGanis);
+            performTest(testWindfury);
+            performTest(testZapp);
+            performTest(testMackerel);
+            performTest(testKhadgar1);
+            performTest(testKhadgar2);
+            performTest(testKhadgar3);
+            performTest(testSelflessGolden);
+            performTest(testSpawnAtk);
             Console.ReadLine();
 
 
@@ -193,7 +206,7 @@ namespace ConsoleApp1
             b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.KaboomBot));
 
             HearthstoneBoard exp1 = new HearthstoneBoard();
-            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BronzeWarden) };
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BronzeWarden).removeReborn() };
             expected.Add(exp1);
             return "test reborn";
 
@@ -575,8 +588,6 @@ namespace ConsoleApp1
             b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus));
             b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat).setStats(0,4));
 
-
-
             HearthstoneBoard exp1 = new HearthstoneBoard();
             exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.SecurityRover).setStats(2,2), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RoverToken)
             , CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MurlocTidehunter), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MurlocTidehunter), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MurlocTidehunter), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MurlocTidehunter)};
@@ -591,17 +602,220 @@ namespace ConsoleApp1
 
             b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.KaboomBot).setStats(3,3));
 
-
-
             HearthstoneBoard exp1 = new HearthstoneBoard();
             expected.Add(exp1);
             return "test soul juggler";
+        }
+
+        public static string testWaxrider(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.WaxriderTogwaggle));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.WaxriderTogwaggle).setStats(5, 4)};
+            expected.Add(exp1);
+            return "test waxrider";
+        }
+
+        public static string testTheBeast(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.TheBeast).setTaunt(true));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MechanoEgg));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(9,9));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.EggToken).setStats(8, 3) };
+            expected.Add(exp1);
+            return "test the beast";
+        }
+
+        public static string testMalGanis(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.ImpGangBoss));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MalGanis).setTaunt(true));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(2,2));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(2, 2));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(2, 2));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(2, 2));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Maexxna));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.ImpGangBoss).setStats(2, 2), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.ImpToken) };
+            expected.Add(exp1);
+            return "test mal'ganis";
+        }
+
+        public static string testWindfury(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MurlocTidehunter).setWindfury(true));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant).setStats(2,1));
+           
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei).setStats(2, 4));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronhideDirehorn).setStats(3, 3).setWindfury(true));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronhideToken)};
+            expected.Add(exp1);
+            return "test windfury";
+        }
+
+        public static string testReborn2(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BronzeWarden));
+
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(2,12));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p2Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus) };
+            expected.Add(exp1);
+            return "test reborn2";
         }
 
 
 
 
 
+        public static string testZapp(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.ZappSlywick));
+
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BaronRivendare));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BaronRivendare).setPoisonous(true));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p2Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BaronRivendare) };
+            expected.Add(exp1);
+
+            HearthstoneBoard exp2 = new HearthstoneBoard();
+            exp2.p2Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant) };
+            expected.Add(exp2);
+
+            return "test zapp targeting";
+        }
+
+        public static string testMackerel(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.HolyMackerel).setDivineShield(true));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.HolyMackerel).setDivineShield(true), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector).setDivineShield(false) };
+            expected.Add(exp1);
+
+            return "test mackerel";
+        }
+        public static string testKhadgar3(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.KindlyGrandmother));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Khadgar));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.ImpToken));
+          
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.GMToken),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.GMToken), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Khadgar)};
+            expected.Add(exp1);
+
+            return "test khadgar 3";
+        }
+
+        public static string testKhadgar1(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.SecurityRover).setTaunt(true));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Khadgar));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.SecurityRover).setTaunt(true).setStats(2,5),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RoverToken), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector),
+            CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Khadgar)};
+            expected.Add(exp1);
+
+            return "test khadgar 1";
+        }
+
+        public static string testKhadgar2(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatPack));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Khadgar));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken),
+            CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RighteousProtector),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Khadgar)};
+            expected.Add(exp1);
+
+            return "test khadgar 2";
+        }
+
+        public static string testSelflessGolden(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createGoldenFromName(CardCreatorFactory.Cards.SelflessHero));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule).setDivineShield(false),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei).setDivineShield(true)};
+            expected.Add(exp1);
+
+            return "test golden selfless";
+        }
+
+        public static string testSpawnAtk(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Imprisoner));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule).setDivineShield(false), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei).setDivineShield(true) };
+            expected.Add(exp1);
+
+            return "test spawnatk last";
+        }
+        
+
+
+
+
+
+
+
+
+
+
+        static void Main(string[] args)
+        {
+            runTests();
+        }
+
     }
+
 }
 

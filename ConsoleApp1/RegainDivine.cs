@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class RegainDivine : Effect
+[Serializable]
+public class RegainDivine : Effect
 
     {
     int dmg;

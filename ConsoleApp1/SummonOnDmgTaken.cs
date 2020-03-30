@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class SummonOnDmgTaken : Effect
+[Serializable]
+public class SummonOnDmgTaken : Effect
 
     {
     string summon;

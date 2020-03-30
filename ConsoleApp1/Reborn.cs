@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class Reborn : Effect
+[Serializable]
+public class Reborn : Effect
 
     {
     bool golden;
@@ -16,9 +17,9 @@ using System.Threading.Tasks;
     {
         board.printDebugMessage("Performing action: reborn: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         if (golden)
-             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),1);
+             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority).removeReborn(), board.getPositionFromMinion(user),1);
         else
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),1);
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority).removeReborn(), board.getPositionFromMinion(user),1);
 
     }
 

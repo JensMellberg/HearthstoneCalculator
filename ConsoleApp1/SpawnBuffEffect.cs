@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class SpawnBuffEffect : Effect
+[Serializable]
+public class SpawnBuffEffect : Effect
 
     {
     Card.Type type;

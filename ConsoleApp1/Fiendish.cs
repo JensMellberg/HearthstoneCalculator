@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-   public class Fiendish : Effect
+[Serializable]
+public class Fiendish : Effect
 
     {
     int times;
@@ -31,7 +31,7 @@ using System.Threading.Tasks;
         {
             while (true)
             {
-                int target = HearthstoneBoard.getRandomNumber(0, userBoard.Count);
+                int target = board.getRandomNumber(0, userBoard.Count);
                 if (userBoard[target] != user)
                 {
                     board.printDebugMessage("Giving damage bonus to " + userBoard[target].getReadableName(),HearthstoneBoard.OutputPriority.INTENSEDEBUG);

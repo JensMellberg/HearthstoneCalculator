@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class DeathRattleBomb : Effect
+[Serializable]
+public class DeathRattleBomb : Effect
 
     {
     int times;
@@ -27,7 +28,7 @@ using System.Threading.Tasks;
         {
             if (opponentBoard.Count == 0)
                 return;
-            Card target = opponentBoard.getRandomCardAlive();
+            Card target = opponentBoard.getRandomCardAlive(board);
             if (target == null)
                 return;
             user.causeDamageToTarget(target, board, 4);

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class BuffFromDivine : Effect
+[Serializable]
+public class BuffFromDivine : Effect
 
     {
     int dmg;

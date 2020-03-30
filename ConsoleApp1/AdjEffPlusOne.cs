@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+[Serializable]
    public class AdjEffPlus : Effect
 
 
@@ -32,6 +33,12 @@ using System.Threading.Tasks;
         if (a is AdjacentAction)
             return true;
         return false;
+    }
+
+    public override void makeUpForReaderError(Card user, HearthstoneBoard board)
+    {
+        foreach (Card c in board.getAdjacents(user))
+            c.addAttack(-1);
     }
 
     public override bool Compare(Effect other)

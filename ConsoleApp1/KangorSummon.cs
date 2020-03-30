@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-   public class KangorSummon : Effect
+[Serializable]
+public class KangorSummon : Effect
 
     {
     int count;

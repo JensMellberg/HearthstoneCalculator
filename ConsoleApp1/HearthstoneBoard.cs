@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class HearthstoneBoard
 {
     public enum OutputPriority
@@ -21,16 +22,35 @@ public class HearthstoneBoard
     public BoardSide p2Board = new BoardSide();
     public OutputPriority printPriority = OutputPriority.NONE;
     public List<Card> pendingDeaths = new List<Card>();
+    public List<int> recievedRandomValues = new List<int>();
+    public List<int> stockedRandomValues = new List<int>();
+    public bool stopFlag = false;
+    public bool finishedWorkFlag = false;
+    public bool finished = false;
+    public Card attacker;
+    public Card defender;
     public HearthstoneBoard()
     {
 
     }
 
     static Random rnd = new Random();
-    public static int getRandomNumber(int start, int end)
+    public static int getRandomNumberMain(int start, int end)
     {
-        int ret = rnd.Next(start, end);
-        return ret;
+        return rnd.Next(start, end);
+    }
+
+    public int getRandomNumber(int start, int end)
+    {
+        if (!(stockedRandomValues.Count == 0))
+        {
+            int ret = stockedRandomValues[0];
+            stockedRandomValues.RemoveAt(0);
+            return ret;
+        }
+        int rnd = HearthstoneBoard.getRandomNumberMain(start, end);
+        recievedRandomValues.Add(rnd);
+        return rnd;
     }
 
     public int getPlayerFromMinion(Card c) {
@@ -41,8 +61,10 @@ public class HearthstoneBoard
         else
             throw new CardDoesNotExistException("getPlayerFromMinion failed: Card does not exist: "+c.ID);
     }
-    public void addNewMinionToBoard(BoardSide current, Card c, int position, int overAllow)
+    public virtual void addNewMinionToBoard(BoardSide current, Card c, int position, int overAllow)
     {
+        if (position == -1)
+            position = current.Count-1;
         c.justCreated = true;
         printDebugMessage("Minion added to board " + (current == p1Board ? 1 : 2) + ": " + c.ID, OutputPriority.BOARDCHANGES);
       
@@ -55,9 +77,13 @@ public class HearthstoneBoard
                 current.Add(c);
             else
                 current.Insert(position + 1, c);
-            foreach (Card d in current)
+            Card lastCard = null;
+            for (int i = 0; i < current.Count; i++)
             {
-                d.performedAction(new CardSpawnedAction(c), this);
+                if (current[i] == lastCard)
+                    continue;
+                lastCard = current[i];
+                current[i].performedAction(new CardSpawnedAction(c), this);
             }
 
         }
@@ -125,7 +151,7 @@ public class HearthstoneBoard
         else if (p2Board.Contains(c))
             current = p2Board;
         else
-            throw new CardDoesNotExistException("getAdjacents failed: card does not exist " + c.getReadableName());
+           throw new CardDoesNotExistException("getAdjacents failed: card does not exist " + c.getReadableName());
         if (current.Count == 1)
             return new List<Card>();
         if (current.IndexOf(c) == 0 && current.Count > 1)
@@ -154,10 +180,23 @@ public class HearthstoneBoard
         return simulateResult();
     }
 
+    public void visualizeSimulation()
+    {
+        stopFlag = true;
+        printPriority = OutputPriority.NONE;
+        simulateResultNoCopy();
+    }
+
 
     public HearthstoneBoard simulateResult()
     {
         HearthstoneBoard newBoard = this.copy();
+        newBoard.simulateResultNoCopy();
+        return newBoard;
+    }
+
+    public void simulateResultNoCopy()
+    {
         int attacker = 0;
         if (p1Board.Count > p2Board.Count)
             attacker = 1;
@@ -165,17 +204,17 @@ public class HearthstoneBoard
             attacker = 2;
         else
         {
-            attacker = rnd.Next(1, 3);
+            attacker = getRandomNumber(1, 3);
         }
-        newBoard.doStartOfTurnEffects(attacker);
-        newBoard.setAttackPriorities(1);
-        newBoard.setAttackPriorities(2);
-       
-        while (newBoard.doTurnIfNotOver(attacker))
-            attacker = changePlayer(attacker);
+        doStartOfTurnEffects(attacker);
+        setAttackPriorities(1);
+        setAttackPriorities(2);
 
-        
-        return newBoard;
+        while (doTurnIfNotOver(attacker))
+            attacker = changePlayer(attacker);
+        finished = true;
+        finishedWorkFlag = true;
+
     }
 
     public void doStartOfTurnEffects(int starter)
@@ -183,6 +222,7 @@ public class HearthstoneBoard
         printDebugMessage("Doing start of turn effects", OutputPriority.INTENSEDEBUG);
         BoardSide start = getBoardFromPlayer(starter);
         BoardSide other = starter == 1 ? p2Board : p1Board;
+
         bool flag = true;
         while (flag)
         {
@@ -190,6 +230,10 @@ public class HearthstoneBoard
             flag = start.doStartOfTurnEffect(this) || flag;
             flag = other.doStartOfTurnEffect(this) || flag;
         }
+        foreach (Card c in start)
+            c.performedAction(new FinilizedSoTAction(), this);
+        foreach (Card c in other)
+            c.performedAction(new FinilizedSoTAction(), this);
 
     }
 
@@ -208,10 +252,10 @@ public class HearthstoneBoard
         return (total + current.tavernTier) * multiplier;
         
     }
-
+    //0 is draw, 1 is player win, 2 is player loss
     public int getWinner()
     {
-        if (p1Board.Count == 0 && p2Board.Count == 0)
+        if (p1Board.Count == 0 && p2Board.Count == 0 || p1Board.Count > 0 && p2Board.Count > 0)
             return 0;
         if (p1Board.Count == 0)
             return 2;
@@ -280,25 +324,37 @@ public class HearthstoneBoard
             attacker.attackPriority = Card.MAX_PRIORITY;
             attacker = getHighestPriorityCard(current);
         }
-        
 
+        attacker.performAttack(chooseTarget(player, attacker), this);
+        printDebugMessage("Checking for windfury: " + attacker.windfury + " isAlive: " + attacker.isAlive() + " Count:" + other.Count,OutputPriority.INTENSEDEBUG);
+        if (attacker.isAlive() && attacker.windfury && other.Count != 0)
+            attacker.performAttack(chooseTarget(player, attacker), this);
+    }
+    public Card chooseTarget(int player, Card attacker)
+    {
+        BoardSide current = getBoardFromPlayer(player);
+        BoardSide other = player == 1 ? p2Board : p1Board;
         Card target;
-        
+        if (attacker.getName().Equals("Zapp Slywick"))
+        {
+            var targets = other.getLowestAtks(this);
+            printDebugMessage("Zapp targets:", OutputPriority.INTENSEDEBUG);
+            foreach (Card c in targets)
+                printDebugMessage(c.getReadableName(), OutputPriority.INTENSEDEBUG);
+            return targets[getRandomNumber(0,targets.Count)];
+        }
+
         List<Card> taunts = other.getTaunts();
         if (taunts.Count == 0)
         {
-            int res = rnd.Next(0, other.Count);
-            if (other.Count== 2)
-            {
-                counts[res]++;
-            }
+            int res = getRandomNumber(0, other.Count);
             target = other[res];
         }
         else
-            target = taunts[rnd.Next(0, taunts.Count)];
-        attacker.performAttack(target, this);
+            target = taunts[getRandomNumber(0, taunts.Count)];
+        return target;
+        
     }
-    public static int[] counts = new int[2];
 
     public bool containsCard(Card c)
     {
@@ -359,13 +415,21 @@ public class HearthstoneBoard
         return false;
     }
 
-
+    public void makeUpForReaderError()
+    {
+        foreach (Card c in p1Board)
+            c.makeUpForReaderError(this);
+        foreach (Card c in p2Board)
+            c.makeUpForReaderError(this);
+    }
 
 
     public HearthstoneBoard copy() {
         HearthstoneBoard board = new HearthstoneBoard();
         board.printPriority = printPriority;
         board.turnbyturn = turnbyturn;
+        foreach (int i in stockedRandomValues)
+            board.stockedRandomValues.Add(i);
         board.p1Board = p1Board.copy();
         board.p2Board = p2Board.copy();
         return board;
