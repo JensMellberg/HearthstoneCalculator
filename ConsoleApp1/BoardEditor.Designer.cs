@@ -38,6 +38,10 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button3
@@ -140,11 +144,52 @@
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(870, 565);
+            this.textBox3.MaxLength = 1;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(17, 20);
+            this.textBox3.TabIndex = 14;
+            this.textBox3.Text = "1";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(916, 565);
+            this.textBox4.MaxLength = 1;
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(17, 20);
+            this.textBox4.TabIndex = 15;
+            this.textBox4.Text = "2";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(889, 569);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(26, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "with";
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(746, 565);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(118, 20);
+            this.button9.TabIndex = 17;
+            this.button9.Text = "Switch position";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // BoardEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1191, 607);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
@@ -175,5 +220,9 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button9;
     }
 }

@@ -55,12 +55,17 @@ namespace ConsoleApp1
             performTest(testKhadgar2);
             performTest(testKhadgar3);
             performTest(testSelflessGolden);
-            performTest(testSpawnAtk);
+            performTest(testAmalgamWax);
+            performTest(testCoilerBaron);
+            performTest(testCleaveDR);
+            performTest(testRoverFullBoard);
+
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("All tests passed! :)))");
+            Console.WriteLine("----------------------------------------");
             Console.ReadLine();
-
-
-
-
 
             return;
 
@@ -778,28 +783,68 @@ namespace ConsoleApp1
             return "test golden selfless";
         }
 
-        public static string testSpawnAtk(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        public static string testAmalgamWax(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
         {
-            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.PackLeader));
-            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Imprisoner));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Amalgam));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.WaxriderTogwaggle));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
 
             HearthstoneBoard exp1 = new HearthstoneBoard();
-            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Annoyomodule).setDivineShield(false), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei).setDivineShield(true) };
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.WaxriderTogwaggle).setStats(3,4) };
             expected.Add(exp1);
 
-            return "test spawnatk last";
+            return "test amalgam and wax";
         }
-        
+        public static string testCoilerBaron(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.SavannahHighmane).setStats(7,7));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BaronRivendare));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronhideDirehorn));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Hyena), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Hyena), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Hyena), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Hyena), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.BaronRivendare) };
+            expected.Add(exp1);
+
+            return "test baron doublesummon";
+        }
+
+        public static string testCleaveDR(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.SavannahHighmane));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.VulgarHomunculus).setStats(10,10));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatPack).setStats(6,6));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.CaveHydra).setStats(10,10));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Hyena), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Hyena), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken),
+            CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.RatToken)};
+            expected.Add(exp1);
+
+            return "test cleave deathrattle";
+        }
+
+        public static string testRoverFullBoard(BoardSide b1, BoardSide b2, List<HearthstoneBoard> expected)
+        {
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat).setHp(20));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.SecurityRover).setTaunt(true));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b1.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei));
+            b2.Add(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei).setStats(6, 2));
+
+            HearthstoneBoard exp1 = new HearthstoneBoard();
+            exp1.p1Board = new BoardSide { CardCreatorFactory.createFromName(CardCreatorFactory.Cards.Alleycat).setHp(14), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei), CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei), 
+            CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei),CardCreatorFactory.createFromName(CardCreatorFactory.Cards.IronSensei)};
+            expected.Add(exp1);
+
+            return "test rover full board";
+        }
+
+
+
 
 
 

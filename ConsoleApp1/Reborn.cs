@@ -17,9 +17,9 @@ public class Reborn : Effect
     {
         board.printDebugMessage("Performing action: reborn: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         if (golden)
-             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority).removeReborn(), board.getPositionFromMinion(user),1);
+             board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority).removeReborn(), board.getPositionFromMinion(user), true);
         else
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority).removeReborn(), board.getPositionFromMinion(user),1);
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(user.cardID).setHp(1).setAttackPriority(user.attackPriority).removeReborn(), board.getPositionFromMinion(user), true);
 
     }
 

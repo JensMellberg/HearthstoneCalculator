@@ -16,7 +16,7 @@ public class SummonOnDmgTakenGolden : Effect
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: summon on damage taken: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),0);
+        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createGoldenFromName(summon).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),false);
     }
     public override Effect makeGolden()
     {

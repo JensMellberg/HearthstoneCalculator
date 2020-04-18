@@ -18,7 +18,7 @@ namespace ConsoleApp1
 
 
 
-             TestRunner.runTests();
+            // TestRunner.runTests();
             BoardStateReader.Run();
            
            // TurnByTurnChecker.runTests();
@@ -27,3 +27,17 @@ namespace ConsoleApp1
         }
     }
 }
+/*TODO
+ * Malygos hero power
+ * Galakrond hero power
+ * Secrets
+ * Lich King reborn
+ * Nefarian hero power
+ * Some dragons not buffing properly
+ * Round 14 some board causes endless loop
+ * 
+ * 
+ * 
+ * 
+ */
+

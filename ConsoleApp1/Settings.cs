@@ -42,6 +42,9 @@ namespace ConsoleApp1
         {
             textBox1.Text = reader.path.Substring(0,reader.path.Length-6);
             textBox2.Text = reader.simulationCount.ToString();
+            textBox3.Text = reader.strengthSimuls.ToString();
+            comboBox1.SelectedIndex = int.Parse(reader.settings[BoardStateReader.ChartType] );
+            checkBox1.Checked = reader.saveBoards;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -56,6 +59,9 @@ namespace ConsoleApp1
                 reader.path = textBox1.Text + @"\Logs\";
                 reader.settings[BoardStateReader.PathID] = reader.path;
                 reader.settings[BoardStateReader.SimulationID] = int.Parse(textBox2.Text).ToString();
+                reader.settings[BoardStateReader.StrengthID] = int.Parse(textBox3.Text).ToString();
+                reader.settings[BoardStateReader.ChartType] = comboBox1.SelectedIndex.ToString();
+                reader.settings[BoardStateReader.SaveBoards] = checkBox1.Checked ? "1" : "0";
                 reader.saveSettings();
             } catch(Exception)
             {
@@ -63,6 +69,16 @@ namespace ConsoleApp1
                 return;
             }
             this.Close();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

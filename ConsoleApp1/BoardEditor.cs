@@ -49,13 +49,65 @@ namespace ConsoleApp1
                 FileStream fs =
                     (FileStream)saveFileDialog1.OpenFile();
 
-                MessageBox.Show(saveFileDialog1.FileName);
 
                 IFormatter formatter = new BinaryFormatter();
 
                 formatter.Serialize(fs, save);
                 fs.Close();
             }
+        }
+        public static void autoSave(BoardSide b, int round)
+        {
+            BoardSide save = b.copy();
+            IFormatter formatter = new BinaryFormatter();
+            string directory = @"BoardSides\Round" + round;
+            Directory.CreateDirectory(directory);
+            string filename = directory + @"\board.boardside";
+            int suffix = 1;
+            while (File.Exists(filename))
+            {
+                suffix++;
+                filename = directory + @"\board" + suffix + ".boardside";
+            }
+
+            //Dont save board if its already saved
+            BoardSide lastBoard = null;
+            if (suffix == 2)
+                lastBoard = loadBoardSide(directory + @"\board.boardside");
+            else if (suffix != 1)
+                lastBoard = loadBoardSide(directory + @"\board" + (suffix - 1) + ".boardside");
+            if (lastBoard != null && lastBoard.Compare(b, null, null))
+                return;
+            Stream stream = new FileStream(filename, FileMode.Create, FileAccess.Write);
+
+            formatter.Serialize(stream, b);
+            stream.Close();
+
+        }
+        public static List<BoardSide> loadAllRoundSides(int round)
+        {
+            List<BoardSide> sides = new List<BoardSide>();
+            string directory = @"BoardSides\Round" + round;
+            Directory.CreateDirectory(directory);
+            string filename = directory + @"\board.boardside";
+            int suffix = 1;
+            while (File.Exists(filename))
+            {
+                sides.Add(loadBoardSide(filename));
+                suffix++;
+                filename = directory + @"\board" + suffix + ".boardside";
+            }
+            return sides;
+
+
+
+        }
+        public static BoardSide loadBoardSide(string filename)
+        {
+            FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+            IFormatter formatter = new BinaryFormatter();
+            BoardSide objnew = (BoardSide)formatter.Deserialize(stream);
+            return objnew;
         }
         public static DrawableHearthstoneBoard loadBoard(string path)
         {
@@ -197,10 +249,36 @@ namespace ConsoleApp1
         private void button8_Click(object sender, EventArgs e)
         {
             board = new DrawableHearthstoneBoard();
-            board.p1Board.Add(DrawableCard.makeDrawable(CardCreatorFactory.createGoldenFromName(CardCreatorFactory.Cards.PilotedShredder)));
+            board.p1Board.Add(DrawableCard.makeDrawable(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant)));
+            board.p1Board.Add(DrawableCard.makeDrawable(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant)));
+     //       board.p1Board.Add(DrawableCard.makeDrawable(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.DragonspawnLieutenant)));
             board.p2Board.Add(DrawableCard.makeDrawable(CardCreatorFactory.createFromName(CardCreatorFactory.Cards.MalGanis)));
+            board.illidanPlayer = 1;
             board.drawBoardState(new Point(50, 50), new Point(50, 300), this);
 
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            int from = 0;
+            int to = 0;
+            try
+            {
+                from = int.Parse(textBox3.Text)-1;
+                to = int.Parse(textBox4.Text)-1;
+                if (from > 7 || from < 1 || to > 7 || to < 1)
+                    throw new Exception();
+            }
+            catch
+            {
+                MessageBox.Show("Please only use numbers between 1 and 7");
+                return;
+            }
+            DrawableCard c1 = (DrawableCard)board.p1Board[from];
+            DrawableCard c2 = (DrawableCard)board.p1Board[to];
+            board.p1Board[from] = c2;
+            board.p1Board[to] = c1;
+            board.drawBoardState(new Point(50, 50), new Point(50, 300), this);
         }
     }
 }

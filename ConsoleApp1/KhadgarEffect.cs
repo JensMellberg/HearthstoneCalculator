@@ -32,7 +32,7 @@ public class KhadgarEffect : Effect
                 return;
             current--;
             board.printDebugMessage("khadgar effect used, count is now " + current, HearthstoneBoard.OutputPriority.INTENSEDEBUG);
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), c.copy().setId(board.getRandomNumber(1, 9999)), board.getPositionFromMinion(c), 0);
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), c.copy().setId(board.getRandomNumber(1, 9999)), board.getPositionFromMinion(c), true);
 
         }
     }

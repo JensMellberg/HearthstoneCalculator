@@ -46,7 +46,7 @@ public class CardCreatorFactory
         TheBeast = "The Beast",
         PilotedShredder = "Piloted Shredder",
         ReplicatingMenace = "Replicating Menace",
-        MechanoEgg = "Mechano Egg",
+        MechanoEgg = "Mechano-Egg",
         MurlocScout = "Murloc Scout",
         Tabbycat = "Tabbycat",
         SavannahHighmane = "Savannah Highmane",
@@ -136,7 +136,7 @@ public class CardCreatorFactory
             case Cards.Alleycat:
                 return new Card(0, "Alleycat", 1, 1, null, false, false, false, Card.Type.Beast,1, name);
             case Cards.OldMurkeye:
-                return new Card(0, "Old Murk-eye", 2, 4, new List<Effect> { new MurlocDmg(1) }, false, false, false, Card.Type.Murloc,2, name);
+                return new Card(0, "Old Murk-Eye", 2, 4, new List<Effect> { new MurlocDmg(1) }, false, false, false, Card.Type.Murloc,2, name);
             case Cards.ColdlightSeer:
                 return new Card(0, "Coldlight Seer", 2, 3, null, false, false, false, Card.Type.Murloc,3, name);
             case Cards.SelflessHero:
@@ -236,7 +236,7 @@ public class CardCreatorFactory
             case Cards.CrowdFavorite:
                 return new Card(0, "Crowd Favorite", 4, 4, null, false, false, false, Card.Type.None, 3, name);
             case Cards.CrystalWeaver:
-                return new Card(0, "Crystal Weaver", 5, 4, null, false, false, false, Card.Type.None, 3, name);
+                return new Card(0, "Crystalweaver", 5, 4, null, false, false, false, Card.Type.None, 3, name);
             case Cards.FelfinNavigator:
                 return new Card(0, "Felfin Navigator", 4, 4, null, false, false, false, Card.Type.Murloc, 3, name);
             case Cards.HangryDragon:
@@ -258,7 +258,7 @@ public class CardCreatorFactory
             case Cards.FloatingWatcher:
                 return new Card(0, "Floating Watcher", 4, 4, null, false, false, false, Card.Type.Demon, 4, name);
             case Cards.MechanoEgg:
-                return new Card(0, "Mechano Egg", 0, 5, new List<Effect> { new DeathRattleSummon(Cards.EggToken,1) }, false, false, false, Card.Type.Mech, 4, name);
+                return new Card(0, "Mechano-Egg", 0, 5, new List<Effect> { new DeathRattleSummon(Cards.EggToken,1) }, false, false, false, Card.Type.Mech, 4, name);
             case Cards.EggToken:
                 return new Card(0, "Robosaur", 8, 8, null, false, false, false, Card.Type.Mech, 1, name);
             case Cards.Amalgam:
@@ -346,7 +346,7 @@ public class CardCreatorFactory
             case Cards.Plant:
                 return new Card(0, "Plant", 1, 1, null, false, false, false, Card.Type.None, 1, name);
             default:
-                return new Card(0, "UknownCard",0,0,null,false,false,false,Card.Type.None,1,"UknownCard");
+                return new Card(0, "UnknownCard",0,0,null,false,false,false,Card.Type.None,1,"UnknownCard");
 
         }
     }

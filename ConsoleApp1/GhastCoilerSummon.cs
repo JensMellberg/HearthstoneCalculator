@@ -17,7 +17,7 @@ public class GhastCoilerSummon : Effect
     {
         board.printDebugMessage("Performing action: random dr summon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         for (int i = 0; i < times; i++)
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard(board).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,1);
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard(board).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,true);
     }
     public Card getRandomCard(HearthstoneBoard board)
     {

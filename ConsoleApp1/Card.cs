@@ -19,6 +19,7 @@ public class Card
     public int tavernTier;
     public bool golden = false;
     public int BoardPosition = 0;
+    public bool tempReborn = false;
     public enum Type
     {
         All,
@@ -62,6 +63,7 @@ public class Card
     }
     public Card removeReborn()
     {
+        tempReborn = false;
         for (int i = effects.Count - 1; i >= 0; i--)
             if (effects[i] is Reborn)
                 effects.RemoveAt(i);
@@ -83,7 +85,8 @@ public class Card
         int result = attack + tempAttackBonus;
         board.printDebugMessage("damagebonus: " + tempAttackBonus+ "on "+getReadableName(), HearthstoneBoard.OutputPriority.COMMUNICATION);
         tempAttackBonus = 0;
-
+        if (board.DeathwingPlayer > 0)
+            result += 2;
         return result;
 
     }
@@ -151,6 +154,7 @@ public class Card
 
     public void deathCheck(HearthstoneBoard board)
     {
+        board.printDebugMessage("Performing death check on " + getReadableName(),HearthstoneBoard.OutputPriority.COMMUNICATION);
         if (!isAlive() && board.containsCard(this))
         {
             this.performedAction(new DeadAction(), board);
@@ -195,8 +199,8 @@ public class Card
         //target.dealDamage(getAttack(board), board);
         causeDamageToTarget(target, board, getAttack(board));
         if (this.dealDamage(returnAttack, board) > 0)
-            foreach (Card c in board.getBoardFromMinion(this))
-                c.performedAction(new GotKillAction(this), board);
+            foreach (Card c in board.getBoardFromMinion(target))
+                c.performedAction(new GotKillAction(target), board);
         
 
         board.deathCheck();
@@ -364,11 +368,19 @@ public class Card
 
     public bool Compare(Card other, HearthstoneBoard board, HearthstoneBoard otherBoard)
     {
-        if (getAttack(board) != other.getAttack(otherBoard))
+        if (attack != other.attack)
             return false;
-        else if (getHp(board) != other.getHp(otherBoard))
+        else if (hp != other.hp)
             return false;
         else if (divineShield != other.divineShield)
+            return false;
+        else if (golden != other.golden)
+            return false;
+        else if (poisonous != other.poisonous)
+            return false;
+        else if (windfury != other.windfury)
+            return false;
+        else if (tavernTier != other.tavernTier)
             return false;
         else if (effects.Count != other.effects.Count)
             return false;

@@ -33,6 +33,18 @@ namespace ConsoleApp1
             return new Expected(labels[res], textcolors[res]);
         }
 
+        //Calculate the chance to do "dmg" damage or more from a given distribution
+        public static double chanceForDamageOrMore(int dmg, List<DmgDistEntry> dmgdist)
+        {
+            double percentage = 0;
+            Func<int, int, bool> op = (dmg > 0) ? (Func<int, int, bool>)((x, y) => x >= y) : ((x, y) => x <= y);
+             foreach (var d in dmgdist)
+                 if (op(d.damage, dmg))
+                     percentage += d.percentage;
+            return percentage;
+        }
+
+        //Find the worst and best result from a list of board results
         public static HearthstoneBoard[] findWorstAndBest(List<HearthstoneBoard> boards)
         {
 
@@ -48,6 +60,7 @@ namespace ConsoleApp1
             return new HearthstoneBoard[] { best, worst };
         }
 
+        //"Draw", "Win", "Loss" 
         public static int expectedResult(double[] avrg)
         {
             double highest = avrg[0];
@@ -96,13 +109,23 @@ namespace ConsoleApp1
 
         public static void printReadableResult(double[] avrgs)
         {
-            //Math.Round(avrgs[0] * 100, 1)
             Console.WriteLine("Chance of Draw: "+ Math.Round(avrgs[0] * 100, 1) + "%");
             Console.WriteLine("Chance of Win: " + Math.Round(avrgs[1] * 100, 1) + "%");
             Console.WriteLine("Chance of Loss: " + Math.Round(avrgs[2] * 100, 1) + "%");
             Console.WriteLine();
         }
+
+        //Calculated expected value (väntevärde)
         public static int mostLikelyOutcome(List<DmgDistEntry> dmgdist)
+        {
+            double value = 0;
+            foreach (DmgDistEntry d in dmgdist)
+            {
+                value += (double)d.damage * (d.percentage/100);
+            }
+            return (int)Math.Round(value,0);
+        }
+        /*   public static int mostLikelyOutcome(List<DmgDistEntry> dmgdist)
         {
             DmgDistEntry likely = new DmgDistEntry(1, 0);
             foreach (DmgDistEntry d in dmgdist)
@@ -111,8 +134,7 @@ namespace ConsoleApp1
                     likely = d;
             }
             return likely.damage;
-        }
-
+        }*/
 
         public struct DmgDistEntry
         {

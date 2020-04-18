@@ -1,2 +1,5 @@
 Path=D:\Program1\Program\Hearthstone\Logs\
-Simulations=10
+Simulations=10000
+StrengthSim=2000
+Chart=2
+SaveBoard=1

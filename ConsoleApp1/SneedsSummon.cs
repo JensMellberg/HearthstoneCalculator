@@ -17,7 +17,7 @@ public class SneedsSummon : Effect
     {
         board.printDebugMessage("Performing action: random sneeds summon: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         for (int i = 0; i < times; i++)
-            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard(board).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),1);
+            board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard(board).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user), true);
     }
     public Card getRandomCard(HearthstoneBoard board)
     {

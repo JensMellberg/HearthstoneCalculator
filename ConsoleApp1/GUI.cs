@@ -22,12 +22,57 @@ namespace ConsoleApp1
             InitializeComponent();
             this.parent = parent;
         }
+        GUIstate currentState;
+        GUIstate lastAddedState;
+        Dictionary<string, GUIstate> allStates = new Dictionary<string, GUIstate>();
         BoardStateReader parent;
         bool loaded = false;
         private void GUI_Load(object sender, EventArgs e)
         {
             loaded = true;
             chart1.Series["Series1"].Name = "Damage distribution";
+            if (parent != null)
+            setChartType(int.Parse(parent.settings[BoardStateReader.ChartType]));
+        }
+        public void setChartType(int type)
+        {
+            this.chart1.Invoke((MethodInvoker)delegate {
+                switch (type)
+                {
+                    case 0: chart1.Series["Damage distribution"].ChartType = SeriesChartType.Line; break;
+                    case 1: chart1.Series["Damage distribution"].ChartType = SeriesChartType.Area; break;
+                    case 2: chart1.Series["Damage distribution"].ChartType = SeriesChartType.Column; break;
+                } 
+            });
+        }
+
+        public void addGUIstate(GUIstate newstate)
+        {
+            string stateName = newstate.opponent;
+            int suffix = 1;
+            while (allStates.ContainsKey(stateName))
+            {
+                suffix++;
+                stateName = newstate.opponent + suffix;
+            }
+            allStates.Add(stateName, newstate);
+            this.comboBox1.Invoke((MethodInvoker)delegate {
+                comboBox1.Items.Add(stateName);
+                if (currentState == lastAddedState)
+                    comboBox1.SelectedIndex = comboBox1.Items.Count-1;
+            });
+            lastAddedState = newstate;
+        }
+
+        public void drawState(GUIstate state)
+        {
+            currentState = state;
+            drawChart(state.dmgdist);
+            setExpected(state.expectedHealth);
+            setLabels(state.dmgdist2, state.opponent);
+            setWorstAndBest(state.board, state.worstValues, state.bestValues);
+            setChancetodie(state.deathodds);
+            setRanking(state.ranking);
         }
 
         public void waitForWindowLoad()
@@ -65,6 +110,55 @@ namespace ConsoleApp1
                 label6.Text = "Expected hp: " + health;
                 if (health <= 0)
                     label6.Text = "Expected hp: DEAD";
+            });
+        }
+        public void resetState()
+        {
+            this.button1.Invoke((MethodInvoker)delegate {
+                button1.Enabled = false;
+            });
+            this.button2.Invoke((MethodInvoker)delegate {
+                button2.Enabled = false;
+            });
+            this.button3.Invoke((MethodInvoker)delegate {
+                button3.Enabled = false;
+            });
+            this.label6.Invoke((MethodInvoker)delegate {
+                label6.Text = "Expected hp: 40";
+            });
+            this.label7.Invoke((MethodInvoker)delegate {
+                label7.Text = "Opponent: ";
+            });
+            this.label8.Invoke((MethodInvoker)delegate {
+                label8.Text = "Expected: ";
+            });
+            this.label2.Invoke((MethodInvoker)delegate {
+                label2.Text = "Draw chance: ";
+            });
+            this.label1.Invoke((MethodInvoker)delegate {
+                label1.Text = "Win chance: ";
+            });
+            this.label3.Invoke((MethodInvoker)delegate {
+                label3.Text = "Loss chance: ";
+            });
+            this.label10.Invoke((MethodInvoker)delegate {
+                label10.Text = "Chance to die: ";
+            });
+            this.label4.Invoke((MethodInvoker)delegate {
+                label4.Text = "Lucky wins: 0";
+            });
+            this.label5.Invoke((MethodInvoker)delegate {
+                label5.Text = "Unlucky losses: 0";
+            });
+            this.comboBox1.Invoke((MethodInvoker)delegate {
+            comboBox1.Items.Clear();
+            allStates = new Dictionary<string, GUIstate>();
+            });
+            this.label11.Invoke((MethodInvoker)delegate {
+                label11.Text = " Board strength: ?th percentile";
+            });
+            this.chart1.Invoke((MethodInvoker)delegate {
+                chart1.Series["Damage distribution"].Points.Clear();
             });
         }
 
@@ -121,6 +215,19 @@ namespace ConsoleApp1
                 label8.ForeColor = expect.color;
             });
         }
+        public void setChancetodie(double percentage)
+        {
+            this.label10.Invoke((MethodInvoker)delegate {
+                label10.Text = "Chance to die: "+ percentage + "%";
+            });
+        }
+
+        public void setRanking(double ranking)
+        {
+            this.label11.Invoke((MethodInvoker)delegate {
+                label11.Text = "Board strength: "+ranking+"th percentile";
+            });
+        }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
@@ -158,6 +265,12 @@ namespace ConsoleApp1
         {
             var settings = new Settings(this, parent);
             settings.Show();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GUIstate state = allStates[comboBox1.SelectedItem.ToString()];
+            drawState(state);
         }
     }
 }

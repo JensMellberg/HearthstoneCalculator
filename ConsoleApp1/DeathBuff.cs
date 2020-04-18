@@ -24,6 +24,7 @@ public class DeathBuff : Effect
     public override Effect makeGolden()
     {
         return new DeathBuff(buff * 2);
+        
     }
 
     public override bool triggerFromAction(Action a)

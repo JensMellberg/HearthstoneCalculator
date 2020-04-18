@@ -17,7 +17,7 @@ public class SummonImpMama : Effect
     {
         board.printDebugMessage("Performing action: summon demon on damage taken: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
         for (int i = 0; i < times; i++)
-        board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard(board).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,0);
+        board.addNewMinionToBoard(board.getPlayerFromMinion(user), getRandomCard(board).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user)+i,false);
     }
     public Card getRandomCard(HearthstoneBoard board)
     {

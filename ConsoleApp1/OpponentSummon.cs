@@ -16,7 +16,7 @@ public class OpponentSummon : Effect
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: deathrattlesummon opponent: " + user, HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        board.addNewMinionToBoard(board.getOpponentBoardFromMinion(user), CardCreatorFactory.createFromName(summon).setAttackPriority(Card.MAX_PRIORITY-1), -1,0);
+        board.addNewMinionToBoard(board.getOpponentBoardFromMinion(user), CardCreatorFactory.createFromName(summon).setAttackPriority(Card.MAX_PRIORITY-1), -1,false);
     }
     public override Effect makeGolden()
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 [Serializable]
@@ -33,6 +34,16 @@ public class SoTDragonFire : Effect
             if (opponentBoard.Count == 0)
                 return;
             int target = board.getRandomNumber(0, opponentBoard.Count);
+            if (board.stopFlag)
+            {
+                board.attacker = user;
+                board.defender = opponentBoard[target];
+                board.finishedWorkFlag = true;
+                while (board.stopFlag)
+                    Thread.Sleep(100);
+                board.finishedWorkFlag = false;
+                board.stopFlag = true;
+            }
             user.causeDamageToTarget(opponentBoard[target], board, counter);
         }
     }

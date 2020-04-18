@@ -16,7 +16,7 @@ public class OverKillSpawn : Effect
     public override void doAction(Action cause, Card user, HearthstoneBoard board, List<Card> alwaysUse)
     {
         board.printDebugMessage("Performing action: overkillspawn: " + user.getReadableName(), HearthstoneBoard.OutputPriority.EFFECTTRIGGERS);
-        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(spawn).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),0);
+        board.addNewMinionToBoard(board.getPlayerFromMinion(user), CardCreatorFactory.createFromName(spawn).setAttackPriority(user.attackPriority), board.getPositionFromMinion(user),false);
     }
     public override Effect makeGolden()
     {

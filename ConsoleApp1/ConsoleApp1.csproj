@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ConsoleApp1.BoardEditor</StartupObject>
+    <StartupObject>ConsoleApp1.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -89,6 +89,7 @@
     <Compile Include="GUI.Designer.cs">
       <DependentUpon>GUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUIstate.cs" />
     <Compile Include="KhadgarEffect.cs" />
     <Compile Include="DivineRefresh.cs" />
     <Compile Include="BuffFromKill.cs" />

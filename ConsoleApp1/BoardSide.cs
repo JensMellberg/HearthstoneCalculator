@@ -10,7 +10,8 @@ public class BoardSide : List<Card>
     public int tavernTier;
     [NonSerialized]
     public List<DeadCard> graveyard;
-
+    //Only used for saved boardstates
+    public string heroOwner = "";
     public BoardSide(List<DeadCard> graveyard, int tier)
     {
         this.graveyard = graveyard;
@@ -34,6 +35,7 @@ public class BoardSide : List<Card>
         foreach (DeadCard e in graveyard)
             newGy.Add(e);
         BoardSide result = new BoardSide(newGy,tavernTier);
+        result.heroOwner = heroOwner;
         foreach (Card c in this)
             result.Add(c.copy());
         return result;
@@ -81,7 +83,7 @@ public class BoardSide : List<Card>
 
     public bool Compare(BoardSide other, HearthstoneBoard board, HearthstoneBoard otherBoard)
     {
-        if (Count != other.Count)
+        if (Count != other.Count || heroOwner != other.heroOwner)
             return false;
         for (int i = 0; i < Count; i++)
         {
@@ -103,6 +105,14 @@ public class BoardSide : List<Card>
             if (d.getAttack(board) == lowest.getAttack(board))
                 ret.Add(d);
         return ret;
+    }
+    public int deadMinions()
+    {
+        int count = 0;
+        foreach (Card c in this)
+            if (!c.isAlive())
+                count++;
+        return count;
     }
 
     public bool doStartOfTurnEffect(HearthstoneBoard board)

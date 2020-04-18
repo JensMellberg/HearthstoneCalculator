@@ -17,7 +17,7 @@ namespace ConsoleApp1
         {
 
         }
-        public override void addNewMinionToBoard(BoardSide current, Card c, int position, int overAllow)
+        public override void addNewMinionToBoard(BoardSide current, Card c, int position, bool overAllow)
         {
             DrawableCard d = DrawableCard.makeDrawable(c);
             switch (d.getName())
@@ -65,12 +65,7 @@ namespace ConsoleApp1
         public new DrawableHearthstoneBoard copy()
         {
             DrawableHearthstoneBoard board = new DrawableHearthstoneBoard();
-            board.printPriority = printPriority;
-            board.turnbyturn = turnbyturn;
-            board.recievedRandomValues = recievedRandomValues;
-            board.stockedRandomValues = stockedRandomValues;
-            board.p1Board = p1Board.copy();
-            board.p2Board = p2Board.copy();
+            copyValuesTo(board);
             return board;
         }
     }
